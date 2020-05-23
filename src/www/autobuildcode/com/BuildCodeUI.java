@@ -8,7 +8,7 @@ public class BuildCodeUI extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
+    private JTextField textCurrentFile;
     private JLabel labAutoBuildCode;
     private JCheckBox checkBoxVo;
     private JCheckBox checkBoxService;
@@ -58,6 +58,12 @@ public class BuildCodeUI extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
+
+    public JTextField getCurrentFile() {
+        return textCurrentFile;
+    }
+
 
     public static void main(String[] args) {
         BuildCodeUI dialog = new BuildCodeUI();

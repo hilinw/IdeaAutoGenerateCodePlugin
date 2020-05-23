@@ -2,6 +2,11 @@ package www.autobuildcode.com;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.project.Project;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.util.PsiUtilBase;
 
 import java.awt.*;
 
@@ -9,7 +14,7 @@ public class Autobuildcode extends AnAction {
 
     BuildCodeUI buildCodeUI = null;
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(AnActionEvent anActionEvent) {
 
         if(buildCodeUI == null){
             buildCodeUI = new BuildCodeUI();
@@ -25,9 +30,32 @@ public class Autobuildcode extends AnAction {
             buildCodeUI.setLocation(screenWidth-width/2, screenHeight-height/2);
         }
 
+        Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+
+        Editor editor = anActionEvent.getData(PlatformDataKeys.EDITOR);
+
+        String currentFile = "";
+
+        String projectPath  = project.getBasePath();
+        if(editor == null){
+
+            currentFile = projectPath;
+        }else{
+            PsiFile currentEditorFile = PsiUtilBase.getPsiFileInEditor(editor, project);
+            currentFile = currentEditorFile.getContainingDirectory().getVirtualFile().getCanonicalPath();
+
+        }
+
+
+        System.out.println("currentFile" + currentFile);
+        buildCodeUI.getCurrentFile().setText(currentFile);
+        //buildCodeUI.getCurrentFile().setName(currentFile);
 
         buildCodeUI.pack();
+
         buildCodeUI.setVisible(true);
+
+
 
     }
 }
