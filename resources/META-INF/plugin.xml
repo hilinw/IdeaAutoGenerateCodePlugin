@@ -1,0 +1,45 @@
+<idea-plugin>
+  <id>com.autobuildcode.plugin</id>
+  <name>Auto Build Code for Idea</name>
+  <version>1.0</version>
+  <vendor email="autobuildcode@yourcompany.com" url="http://www.autobuildcode.com">autobuildcode</vendor>
+
+  <description><![CDATA[
+      Auto Build Code for Idea.<br>
+      <em></em>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      <br>
+      <em></em>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="173.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+        -->
+
+  <extensions defaultExtensionNs="com.intellij">
+
+  </extensions>
+
+  <actions>
+
+      <group id="autobuildcodePlugin" text="Auto Build Code" description="Auto Build Code">
+          <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+          <action id="autobuildcode" class="www.autobuildcode.com.Autobuildcode" text="Auto Build Code" description="autobuildcode">
+          </action>
+
+      </group>
+
+      <action id="autobuildcode" class="www.autobuildcode.com.Autobuildcode" text="Auto Build Code" description="autobuildcode">
+          <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+      </action>
+  </actions>
+
+</idea-plugin>
