@@ -10,7 +10,8 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      <br>
+      The First Version 2020-05-25.<br>
+      By wanglinhai
       <em></em>
     ]]>
   </change-notes>
@@ -30,14 +31,15 @@
 
   <actions>
 
-      <group id="autobuildcodePlugin" text="Auto Build Code" description="Auto Build Code">
+      <group id="autobuildcodePlugin" text="Auto Build Code" description="Auto Build Code" icon="/icons/autobuild1x.png">
           <add-to-group group-id="EditorPopupMenu" anchor="last"/>
           <action id="autobuildcode" class="www.autobuildcode.com.Autobuildcode" text="Auto Build Code" description="autobuildcode">
           </action>
 
       </group>
 
-      <action id="autobuildcode" class="www.autobuildcode.com.Autobuildcode" text="Auto Build Code" description="autobuildcode">
+      <action id="autobuildcode" class="www.autobuildcode.com.Autobuildcode" text="Auto Build Code" description="autobuildcode"
+              icon="/icons/autobuild.png">
           <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
       </action>
   </actions>

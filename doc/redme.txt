@@ -1,3 +1,9 @@
 
 https://www.jianshu.com/p/2427e4cfd3e9
 
+第一个入门:
+https://blog.csdn.net/ExcellentYuXiao/article/details/80273109
+
+idea插件开发入门: ok
+https://blog.csdn.net/mmk1992/article/details/106320025/
+
