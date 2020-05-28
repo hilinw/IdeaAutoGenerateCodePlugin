@@ -1,2 +1,2 @@
-# IdeaAutoBuildCodePlugin
-Idea Auto Build Code Plugin
+# IdeaAutoGenerateCodePlugin
+Idea Auto Generate Code Plugin
