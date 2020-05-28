@@ -12,7 +12,7 @@ public class GenerateCodeUI extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField textCurrentFile;
-    private JLabel labAutoBuildCode;
+    private JLabel labAutoGenerateCode;
     private JCheckBox checkBoxVo;
     private JCheckBox checkBoxService;
     private JCheckBox checkBoxIbatis;

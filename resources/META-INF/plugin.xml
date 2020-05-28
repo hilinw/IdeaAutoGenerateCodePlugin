@@ -31,15 +31,15 @@
 
   <actions>
 
-    <group id="autoGeneratecodePlugin" text="Auto Generate Code" description="Auto Generate Code" icon="/icons/autogenerate.png">
+    <group id="autoGeneratecodeProjectMenu" text="Auto Generate Code" description="Auto Generate Code" icon="/icons/autogenerate.png">
       <add-to-group group-id="ProjectViewPopupMenu" anchor="last" />
-      <action id="autoGeneratecode" class="www.autogeneratecode.com.AutoGeneratecode" text="Auto Build Code" description="Auto Generate Code"
+      <action id="autoGeneratecode" class="www.autogeneratecode.com.AutoGeneratecode" text="Auto Generate Code" description="Auto Generate Code"
               icon="/icons/autogenerate.png">
       </action>
 
     </group>
 
-    <action id="autobuildcodeMenu" class="www.autogeneratecode.com.AutoGeneratecode" text="Auto Generate Code" description="Auto Generate Code"
+    <action id="autoGeneratecodeEditMenu" class="www.autogeneratecode.com.AutoGeneratecode" text="Auto Generate Code" description="Auto Generate Code"
             icon="/icons/autogenerate.png">
       <add-to-group group-id="EditorPopupMenu" anchor="last"/>
     </action>

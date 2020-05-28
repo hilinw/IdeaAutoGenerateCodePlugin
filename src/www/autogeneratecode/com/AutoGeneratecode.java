@@ -11,6 +11,7 @@ import com.intellij.psi.util.PsiUtilBase;
 import org.jetbrains.annotations.NotNull;
 import www.autogeneratecode.codegen.ProjectConfig;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import java.util.List;
 
 public class AutoGeneratecode extends AnAction {
 
-    protected GenerateCodeUI buildCodeUI = null;
+    protected GenerateCodeUI generateCodeUI = null;
+    protected MetadataDialogUI metadataDialogUI = null;
+
     protected boolean showMetadataDialog = false;
     List<PsiJavaFileImpl> psiFiles = new ArrayList<PsiJavaFileImpl>();
 
@@ -36,27 +39,41 @@ public class AutoGeneratecode extends AnAction {
 
     }
 
+    public void showInCenter(JDialog jDialog) {
+        Toolkit kit = Toolkit.getDefaultToolkit();    // 定义工具包
+        Dimension screenSize = kit.getScreenSize();   // 获取屏幕的尺寸
+        int screenW = screenSize.width / 2;         // 获取屏幕的宽
+        int screenH = screenSize.height / 2;       // 获取屏幕的高
+        int height = jDialog.getPreferredSize().height;
+        int width = jDialog.getPreferredSize().width;
+
+        jDialog.setSize(width, height);
+        jDialog.setLocation(screenW - width / 2, screenH - height / 2);
+    }
+
+
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
-        if (!showMetadataDialog) {
+        if (showMetadataDialog) {
+            if (metadataDialogUI == null) {
+                metadataDialogUI = new MetadataDialogUI();
+                metadataDialogUI.setPreferredSize(new Dimension(500, 350));
+                showInCenter(metadataDialogUI);
+            }
+            metadataDialogUI.setPsiJavaFileImpl(psiFiles.get(0));
+            metadataDialogUI.pack();
+            metadataDialogUI.setVisible(true);
 
-
+            return;
         }
 
-        if (buildCodeUI == null) {
-            buildCodeUI = new GenerateCodeUI();
-            buildCodeUI.setPreferredSize(new Dimension(600, 380));
+        if (generateCodeUI == null) {
+            generateCodeUI = new GenerateCodeUI();
+            generateCodeUI.setPreferredSize(new Dimension(650, 380));
 
-            Toolkit kit = Toolkit.getDefaultToolkit();    // 定义工具包
-            Dimension screenSize = kit.getScreenSize();   // 获取屏幕的尺寸
-            int screenW = screenSize.width / 2;         // 获取屏幕的宽
-            int screenH = screenSize.height / 2;       // 获取屏幕的高
-            int height = buildCodeUI.getPreferredSize().height;
-            int width = buildCodeUI.getPreferredSize().width;
+            showInCenter(generateCodeUI);
 
-            buildCodeUI.setSize(width, height);
-            buildCodeUI.setLocation(screenW - width / 2, screenH - height / 2);
         }
 
         ProjectConfig projectConfig = getProjectConfig(anActionEvent);
@@ -64,17 +81,17 @@ public class AutoGeneratecode extends AnAction {
 //        System.out.println("WorkSpace:" + projectConfig.getWorkSpace());
 //        System.out.println("ProjectDirectory:" + projectConfig.getProjectDirectory());
 //        System.out.println("ShortName:" + projectConfig.getShortName());
-        buildCodeUI.getCurrentFile().setText(projectConfig.getProjectDirectory().getPath());
+        generateCodeUI.getCurrentFile().setText(projectConfig.getProjectDirectory().getPath());
 
+        generateCodeUI.setConfig(projectConfig);
 
-        buildCodeUI.setConfig(projectConfig);
+        generateCodeUI.pack();
 
-        buildCodeUI.pack();
-
-        buildCodeUI.setVisible(true);
+        generateCodeUI.setVisible(true);
 
 
     }
+
 
     public static String getFileExtension(DataContext dataContext) {
         VirtualFile file = DataKeys.VIRTUAL_FILE.getData(dataContext);
@@ -84,6 +101,7 @@ public class AutoGeneratecode extends AnAction {
 
     public boolean checkSelect(AnActionEvent e) {
 
+        showMetadataDialog = false;
         psiFiles.clear();
         //条件：选择的为java文件，并且以metadata开头的路径
 
@@ -120,8 +138,8 @@ public class AutoGeneratecode extends AnAction {
                             String packageName = psiJavaFileImpl.getPackageName();
                             if (packageName.startsWith("metadata.")) {
                                 psiFiles.add(psiJavaFileImpl);
-                            }else{
-                                if(psiElements.length ==1){
+                            } else {
+                                if (psiElements.length == 1) {
                                     psiFiles.add(psiJavaFileImpl);
                                     showMetadataDialog = true;
                                     return true;
