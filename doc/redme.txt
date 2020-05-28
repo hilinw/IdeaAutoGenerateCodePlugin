@@ -7,3 +7,75 @@ https://blog.csdn.net/ExcellentYuXiao/article/details/80273109
 idea插件开发入门: ok
 https://blog.csdn.net/mmk1992/article/details/106320025/
 
+
+PsiFile: 对应于应用中的文件，如.Java的文件或者是.xml的文件等；
+PsiDirectory: 对应于应用中的目录
+PsiJavaFile: 对应于Java源文件，如Test.java
+PsiClass: 对应于某个类，其中一个文件中可能会有多个类；
+PsiMethod: 对应于类中的某个方法
+PsiField: 对应于类中的某个属性
+PsiAnnotation: 对应于注解；
+常用方法
+获取当前项目：
+
+Project project = anActionEvent.getProject();
+
+获取当前的编辑器对象：
+
+Editor editor = anActionEvent.getData(CommonDataKeys.EDITOR);
+
+获取当前编辑的文件：
+
+PsiFile psiFile = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+
+// 如果是Java文件，可以转换成PsiJavaFile
+PsiJavaFile javaFile = (PsiJavaFile)psiFile;
+
+获取JavaFile中的Class：
+
+// 一个文件中可能会定义有多个Class，因此返回的是一个数组
+PsiClass[] classes = javaFile.getClasses();
+PsiClass的常用方法：
+
+获取所有属性：getFields、getAllFields
+查找属性：findFieldByName()，其中第二个参数是是否查找父类的属性；
+获取所有方法：getMethods/getAllMethods
+查找方法：findMethodsByName
+
+Import某个类：由于引入类操作是在File中进行的，因此在Class类上是没有办法导入的，如果已经获取到了javaFile对象，那么可以这样导入，否则需要先获取到Class所在的File后再进行导入：
+
+javaFile.importClass(aClass);
+
+根据文件名查找路径
+FilenameIndex.getFilesByName()
+
+根据class获取所在文件：
+
+(PsiJavaFile) aClass.getContainingFile()
+
+获取类所在包：
+
+// 先获取到文件后再获取文件所在包
+String daoPackage = ((PsiJavaFile) aClass.getContainingFile()).getPackageName();
+创建文件（包含文件中的类）：
+
+javaFile = (PsiJavaFile) PsiFileFactory.getInstance(project).createFileFromText(“Test.java”, JavaFileType.INSTANCE, “public class Test {}”);
+
+获取当前文件所在包：
+
+PsiDirectory containerDirectory = javaFile.getContainingDirectory();
+
+创建子包（子目录）：
+
+parentDirectory.createSubdirectory(“test”);
+
+将文件添加到包中去
+
+psiDirectory.add(javaFile);
+
+查找类：
+
+PsiShortNamesCache shortNamesCache = PsiShortNamesCache.getInstance(project);
+PsiClass[] classes = shortNamesCache.getClassesByName(“Test”, GlobalSearchScope.allScope(project));
+
+

@@ -1,11 +1,11 @@
 <idea-plugin>
-  <id>com.autobuildcode.plugin</id>
-  <name>Auto Build Code for Idea</name>
+  <id>com.autogeneratecode.plugin</id>
+  <name>Auto Generate Code for Idea</name>
   <version>1.0</version>
-  <vendor email="autobuildcode@yourcompany.com" url="http://www.autobuildcode.com">autobuildcode</vendor>
+  <vendor email="autogeneratecode@yourcompany.com" url="http://www.autogeneratecode.com">autogeneratecode</vendor>
 
   <description><![CDATA[
-      Auto Build Code for Idea.<br>
+      Auto Generate Code for Idea.<br>
       <em></em>
     ]]></description>
 
@@ -31,17 +31,18 @@
 
   <actions>
 
-      <group id="autobuildcodePlugin" text="Auto Build Code" description="Auto Build Code" icon="/icons/autobuild1x.png">
-          <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-          <action id="autobuildcode" class="www.autobuildcode.com.Autobuildcode" text="Auto Build Code" description="autobuildcode">
-          </action>
-
-      </group>
-
-      <action id="autobuildcode" class="www.autobuildcode.com.Autobuildcode" text="Auto Build Code" description="autobuildcode"
-              icon="/icons/autobuild.png">
-          <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    <group id="autoGeneratecodePlugin" text="Auto Generate Code" description="Auto Generate Code" icon="/icons/autogenerate.png">
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last" />
+      <action id="autoGeneratecode" class="www.autogeneratecode.com.AutoGeneratecode" text="Auto Build Code" description="Auto Generate Code"
+              icon="/icons/autogenerate.png">
       </action>
+
+    </group>
+
+    <action id="autobuildcodeMenu" class="www.autogeneratecode.com.AutoGeneratecode" text="Auto Generate Code" description="Auto Generate Code"
+            icon="/icons/autogenerate.png">
+      <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+    </action>
   </actions>
 
 </idea-plugin>
