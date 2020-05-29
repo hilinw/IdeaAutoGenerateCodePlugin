@@ -4,12 +4,14 @@ import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.intellij.psi.util.PsiUtilBase;
 import org.jetbrains.annotations.NotNull;
 import www.autogeneratecode.codegen.ProjectConfig;
+import www.autogeneratecode.model.Entity;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +25,8 @@ public class AutoGeneratecode extends AnAction {
     protected MetadataDialogUI metadataDialogUI = null;
 
     protected boolean showMetadataDialog = false;
-    List<PsiJavaFileImpl> psiFiles = new ArrayList<PsiJavaFileImpl>();
+    protected List<PsiJavaFileImpl> psiFiles = new ArrayList<PsiJavaFileImpl>();
+    protected List<PsiClass> psiClasss = new ArrayList<PsiClass>();
 
     @Override
     public void update(@NotNull AnActionEvent e) {
@@ -122,7 +125,12 @@ public class AutoGeneratecode extends AnAction {
                     PsiJavaFileImpl psiJavaFileImpl = (PsiJavaFileImpl) currentEditorFile;
                     String packageName = psiJavaFileImpl.getPackageName();
                     psiFiles.add(psiJavaFileImpl);
-                    if (!packageName.startsWith("metadata.")) {
+                    PsiClass[] psiClass1 = psiJavaFileImpl.getClasses();
+                    //for(PsiClass  psiClass : psiClass1) {
+                        psiClasss.add(psiClass1[0]);
+                    //}
+
+                    if (!packageName.startsWith("metadata.") || psiClass1[0].getAnnotation("www.autogeneratecode.model.Entity") == null) {
                         showMetadataDialog = true;
                     }
                     return true;
@@ -136,22 +144,20 @@ public class AutoGeneratecode extends AnAction {
 
                             PsiJavaFileImpl psiJavaFileImpl = (PsiJavaFileImpl) psiFile;
                             String packageName = psiJavaFileImpl.getPackageName();
-                            if (packageName.startsWith("metadata.")) {
-                                psiFiles.add(psiJavaFileImpl);
-                            } else {
+                            psiFiles.add(psiJavaFileImpl);
+                            PsiClass[] psiClass1 = psiJavaFileImpl.getClasses();
+                            //for(PsiClass  psiClass : psiClass1) {
+                                psiClasss.add(psiClass1[0]);
+                            //}
+                            if (!packageName.startsWith("metadata.") || psiClass1[0].getAnnotation("www.autogeneratecode.model.Entity") == null) {
                                 if (psiElements.length == 1) {
-                                    psiFiles.add(psiJavaFileImpl);
                                     showMetadataDialog = true;
                                     return true;
                                 }
                             }
-
                         }
-
                     }
-
                 }
-
             }
             if (psiFiles.size() > 0) {
                 return true;

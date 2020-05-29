@@ -136,10 +136,10 @@ public class MetadataDialogUI extends JDialog {
 
         sb.append(";\n");
         sb.append("\n");
-        sb.append("import www.autobuildcode.model.Column;\n");
-        sb.append("import www.autobuildcode.model.Comment;\n");
-        sb.append("import www.autobuildcode.model.Entity;\n");
-        sb.append("import www.autobuildcode.model.Table;\n");
+        sb.append("import www.autogeneratecode.model.Column;\n");
+        sb.append("import www.autogeneratecode.model.Comment;\n");
+        sb.append("import www.autogeneratecode.model.Entity;\n");
+        sb.append("import www.autogeneratecode.model.Table;\n");
 
         sb.append("\n");
 

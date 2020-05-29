@@ -65,7 +65,7 @@
             </constraints>
             <properties>
               <enabled value="false"/>
-              <text value="The automatically generated file must be:&#10;It's a java file and package name is start with 'metadata.'&#10;&#10;&#10;能自动生成代码的文件必须是java文件且包名称以&quot;metadata.&quot;开头。&#10;点击OK按钮可以帮忙生成一个模板文件。"/>
+              <text value="The automatically generated file must be:&#10;1、It's a java file and package name is start with 'metadata.';&#10;2、It's Annotation by 'www.autogeneratecode.model.Entity'.&#10;能自动生成代码的文件必须是:&#10;1、java文件且包名称以&quot;metadata.&quot;开头;&#10;2、有注解 'www.autogeneratecode.model.Entity'&#10;点击OK按钮可以帮忙生成一个模板文件。"/>
             </properties>
           </component>
           <component id="aa040" class="javax.swing.JLabel">

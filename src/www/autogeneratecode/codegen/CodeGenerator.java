@@ -1,6 +1,7 @@
 package www.autogeneratecode.codegen;
 
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -52,14 +53,15 @@ public class CodeGenerator {
                     LOG.info("workspace : " + this.config.getWorkSpace());
                 }
 
-                Iterator iterator = this.config.getEntities().iterator();
+                Iterator iterator = this.config.getPsiFiles().iterator();
 
-                while(iterator.hasNext()) {
-                    Class<?> entity = (Class)iterator.next();
-                    if (entity.getAnnotation(Entity.class) != null ) {
-//                        if (this.config.isGenerateEntity()) {
-//                            this.generateEntityFile(entity);
-//                        }
+                while (iterator.hasNext()) {
+                    PsiJavaFileImpl psiJavaFileImpl = (PsiJavaFileImpl) iterator.next();
+                    PsiClass[] psiClass1 = psiJavaFileImpl.getClasses();
+                    if (psiClass1[0].getAnnotation("www.autogeneratecode.model.Entity") != null) {
+                        if (this.config.isGenerateEntity()) {
+                            this.generateEntityFile(psiJavaFileImpl);
+                        }
 //
 //                        if (this.config.isGenerateDAO()) {
 //                            this.generateDaoFile(entity);
@@ -117,8 +119,6 @@ public class CodeGenerator {
 //                    }
 
 
-
-
                 }
 
 
@@ -131,26 +131,70 @@ public class CodeGenerator {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(e2.getMessage(), e2);
                 }
-                new CodeGenException("代码生成出错"+e2.getMessage());
+                new CodeGenException("代码生成出错" + e2.getMessage());
             }
+            this.reflash();
         }
     }
 
-    private  void reflash(){
+    private void reflash() {
         PsiJavaFileImpl pjf = this.config.getPsiFiles().get(0);
         String packageName = pjf.getPackageName();
         VirtualFile vf = pjf.getVirtualFile().getParent();
         String[] arr = packageName.split("\\.");
         int i = arr.length;
-        for(int j = 0 ;j < i; j++){
-            if(vf != null) {
+        for (int j = 0; j < i; j++) {
+            if (vf != null) {
                 vf = vf.getParent();
             }
         }
         //System.out.println("vf:"+vf.getPath());
-        vf.refresh(true,true);
+        vf.refresh(true, true);
 
     }
+
+    private File[] generateEntityFile(PsiJavaFileImpl psiJavaFileImpl) {
+        PsiClass[] classes = psiJavaFileImpl.getClasses();
+        File[] files = new File[classes.length];
+        int i = 0;
+
+        for (PsiClass psiClass : classes) {
+
+            //JavaEntityGenerator generator = new JavaEntityGenerator(item);
+
+
+            //files[i] = javaFile.write(this.config.getWorkSpace());
+            if (this.getProjectDir() != null) {
+                this.fileTasks.add(new CopyTask(files[i], this.getEntityFileDir(psiJavaFileImpl)));
+            }
+
+            LOG.info("generate: '" + psiJavaFileImpl.getName() + "'  ok.");
+
+        }
+
+        return files;
+
+    }
+
+
+    /**
+     * 生成VO文件的路径。
+     * 在原来的路径里面去掉metadata
+     */
+    private File getEntityFileDir(PsiJavaFileImpl psiJavaFileImpl) {
+        String filePath = psiJavaFileImpl.getVirtualFile().getParent().getPath();
+        int p = filePath.indexOf("metadata");
+        String newPath  = "";
+        if(p>0){
+            newPath = filePath.substring(0,p);
+            newPath = newPath + filePath.substring(p+9);
+        }
+        File file = new File(newPath,psiJavaFileImpl.getVirtualFile().getName());
+        System.out.println("newJavaFilePath:"+file.getPath());
+        return file;
+
+    }
+
 
     public ProjectConfig getConfig() {
         return config;

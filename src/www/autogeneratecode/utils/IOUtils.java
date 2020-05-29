@@ -436,6 +436,24 @@ public class IOUtils {
         }
     }
 
+    public File write(File file,String source) throws IOException {
+        if(file.exists()){
+            file.delete();
+        }
+        file.mkdirs();
+        //File file = new File(dir, this.name);
+        OutputStreamWriter writer = null;
+
+        try {
+            writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            writer.write(source);
+        } finally {
+            this.close(writer);
+        }
+
+        return file;
+    }
+
     public static boolean matches(String pattern, String file) {
         if (file != null)
             file = file.replace('\\', '/');

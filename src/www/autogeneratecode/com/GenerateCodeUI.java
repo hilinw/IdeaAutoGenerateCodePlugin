@@ -60,8 +60,8 @@ public class GenerateCodeUI extends JDialog {
 
         CodeGenerator generator = new CodeGenerator();
 
-        config.setGenerateService(checkBoxService.isSelected());
         config.setGenerateEntity(checkBoxVo.isSelected());
+        config.setGenerateService(checkBoxService.isSelected());
         config.setGenerateDAO(checkBoxDDL.isSelected());
         config.setGenerateIbatisSql(checkBoxIbatis.isSelected());
 
