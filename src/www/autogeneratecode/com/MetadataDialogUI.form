@@ -57,15 +57,6 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="1fbd1" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <font/>
-              <text value="The selected file cannot generate code automatically!"/>
-            </properties>
-          </component>
           <component id="a80b6" class="javax.swing.JTextArea" binding="textArea">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -73,7 +64,8 @@
               </grid>
             </constraints>
             <properties>
-              <text value="The automatically generated file must be:&#10;It's package name is starts with 'metadata.'"/>
+              <enabled value="false"/>
+              <text value="The automatically generated file must be:&#10;It's a java file and package name is start with 'metadata.'&#10;&#10;&#10;能自动生成代码的文件必须是java文件且包名称以&quot;metadata.&quot;开头。&#10;点击OK按钮可以帮忙生成一个模板文件。"/>
             </properties>
           </component>
           <component id="aa040" class="javax.swing.JLabel">
@@ -81,9 +73,30 @@
               <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Help create a template file?"/>
+              <text value="Check 'OK' to Help create a template file."/>
             </properties>
           </component>
+          <grid id="1440b" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="-1" height="40"/>
+              </grid>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="1fbd1" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font/>
+                  <text value="The selected file can not generate code automatically !"/>
+                </properties>
+              </component>
+            </children>
+          </grid>
         </children>
       </grid>
     </children>

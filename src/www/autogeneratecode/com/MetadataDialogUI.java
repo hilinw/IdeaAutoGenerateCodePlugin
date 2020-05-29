@@ -1,5 +1,6 @@
 package www.autogeneratecode.com;
 
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import www.autogeneratecode.codegen.CodeGenException;
 import www.autogeneratecode.utils.CopyTask;
@@ -10,6 +11,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 public class MetadataDialogUI extends JDialog {
     private JPanel contentPane;
@@ -66,44 +69,50 @@ public class MetadataDialogUI extends JDialog {
         String newPath  = "";
         if( p >0){
             newPath = filePath.substring(0,p);
-
             newPath = newPath + "metadata/"+packageName2;
-
         }
         if(newPath.length() >0){
-
             File file = new File(newPath);
             file.mkdirs();
-
-
             try {
                 String source = getExampleFile(newPackageName);
-
                 File javafile = new File(newPath,  "ExampleFile.java");
-
                 System.out.println("javafile:"+javafile.getPath());
-
                 if(javafile.exists()){
                     javafile.delete();
                 }
-
                 OutputStreamWriter writer = null;
-
                 try {
                     writer = new OutputStreamWriter(new FileOutputStream(javafile), "UTF-8");
                     writer.write(source);
                 } finally {
                     IOUtils.close(writer);
                 }
-
+                this.reflash(packageName);
 
             } catch (Exception e1) {
-                throw new CodeGenException("生成ExampleFile出错， '" +  "ExampleFile.java'", e1);
+                throw new CodeGenException("生成ExampleFile.java出错， '", e1);
             }
-
         }
 
         dispose();
+    }
+
+    private  void reflash(String packageName){
+
+        VirtualFile vf = psiJavaFileImpl.getVirtualFile().getParent();
+        String[] arr = packageName.split("\\.");
+
+        int i = arr.length;
+
+        for(int j = 0 ;j < i; j++){
+            if(vf != null) {
+                vf = vf.getParent();
+            }
+        }
+        System.out.println("vf:"+vf.getPath());
+        vf.refresh(true,true);
+
     }
 
     private void onCancel() {
