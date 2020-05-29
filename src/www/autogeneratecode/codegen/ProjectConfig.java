@@ -1,5 +1,7 @@
 package www.autogeneratecode.codegen;
 
+import com.intellij.psi.impl.source.PsiJavaFileImpl;
+
 import java.io.File;
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class ProjectConfig {
     private boolean projectTest = false;
 
     protected final List<Class<?>> entities = null;
-
+    List<PsiJavaFileImpl> psiFiles = null;
 
     public File getWorkSpace() {
         return workSpace;
@@ -103,6 +105,13 @@ public class ProjectConfig {
         return entities;
     }
 
+    public List<PsiJavaFileImpl> getPsiFiles() {
+        return psiFiles;
+    }
+
+    public void setPsiFiles(List<PsiJavaFileImpl> psiFiles) {
+        this.psiFiles = psiFiles;
+    }
 
     public void setProjectDirectory(File projectDirectory) {
         this.projectDirectory = projectDirectory;

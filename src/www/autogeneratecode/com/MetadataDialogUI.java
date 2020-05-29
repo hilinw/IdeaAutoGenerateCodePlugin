@@ -110,7 +110,7 @@ public class MetadataDialogUI extends JDialog {
                 vf = vf.getParent();
             }
         }
-        System.out.println("vf:"+vf.getPath());
+        //System.out.println("vf:"+vf.getPath());
         vf.refresh(true,true);
 
     }

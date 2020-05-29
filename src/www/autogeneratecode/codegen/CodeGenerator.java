@@ -1,5 +1,7 @@
 package www.autogeneratecode.codegen;
 
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -50,10 +52,10 @@ public class CodeGenerator {
                     LOG.info("workspace : " + this.config.getWorkSpace());
                 }
 
-                Iterator var7 = this.config.getEntities().iterator();
+                Iterator iterator = this.config.getEntities().iterator();
 
-                while(var7.hasNext()) {
-                    Class<?> entity = (Class)var7.next();
+                while(iterator.hasNext()) {
+                    Class<?> entity = (Class)iterator.next();
                     if (entity.getAnnotation(Entity.class) != null ) {
 //                        if (this.config.isGenerateEntity()) {
 //                            this.generateEntityFile(entity);
@@ -132,6 +134,22 @@ public class CodeGenerator {
                 new CodeGenException("代码生成出错"+e2.getMessage());
             }
         }
+    }
+
+    private  void reflash(){
+        PsiJavaFileImpl pjf = this.config.getPsiFiles().get(0);
+        String packageName = pjf.getPackageName();
+        VirtualFile vf = pjf.getVirtualFile().getParent();
+        String[] arr = packageName.split("\\.");
+        int i = arr.length;
+        for(int j = 0 ;j < i; j++){
+            if(vf != null) {
+                vf = vf.getParent();
+            }
+        }
+        //System.out.println("vf:"+vf.getPath());
+        vf.refresh(true,true);
+
     }
 
     public ProjectConfig getConfig() {

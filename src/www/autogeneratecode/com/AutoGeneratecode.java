@@ -185,6 +185,7 @@ public class AutoGeneratecode extends AnAction {
         projectConfig.setProjectDirectory(new File(projectPath));
         projectConfig.setShortName(shortName);
 
+        projectConfig.setPsiFiles(psiFiles);
 
         return projectConfig;
     }
