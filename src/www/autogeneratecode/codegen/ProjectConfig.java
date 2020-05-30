@@ -12,6 +12,7 @@ public class ProjectConfig {
     private File projectDirectory;
     private String shortName;
     private boolean generateEntity = true;
+    private boolean generateGetterAndSetter = true;
     private boolean generateService = true;
     private boolean generateDAO = true;
     private boolean generateIbatisSql = true;
@@ -41,64 +42,136 @@ public class ProjectConfig {
         return projectDirectory;
     }
 
+    public void setProjectDirectory(File projectDirectory) {
+        this.projectDirectory = projectDirectory;
+    }
+
     public String getShortName() {
         return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
     }
 
     public boolean isGenerateEntity() {
         return generateEntity;
     }
 
+    public void setGenerateEntity(boolean generateEntity) {
+        this.generateEntity = generateEntity;
+    }
+
+    public boolean isGenerateGetterAndSetter() {
+        return generateGetterAndSetter;
+    }
+
+    public void setGenerateGetterAndSetter(boolean generateGetterAndSetter) {
+        this.generateGetterAndSetter = generateGetterAndSetter;
+    }
+
     public boolean isGenerateService() {
         return generateService;
+    }
+
+    public void setGenerateService(boolean generateService) {
+        this.generateService = generateService;
     }
 
     public boolean isGenerateDAO() {
         return generateDAO;
     }
 
+    public void setGenerateDAO(boolean generateDAO) {
+        this.generateDAO = generateDAO;
+    }
+
     public boolean isGenerateIbatisSql() {
         return generateIbatisSql;
+    }
+
+    public void setGenerateIbatisSql(boolean generateIbatisSql) {
+        this.generateIbatisSql = generateIbatisSql;
     }
 
     public boolean isGenerateDDL() {
         return generateDDL;
     }
 
+    public void setGenerateDDL(boolean generateDDL) {
+        this.generateDDL = generateDDL;
+    }
+
     public boolean isGenerateResource() {
         return generateResource;
+    }
+
+    public void setGenerateResource(boolean generateResource) {
+        this.generateResource = generateResource;
     }
 
     public boolean isGenerateServiceTestCase() {
         return generateServiceTestCase;
     }
 
+    public void setGenerateServiceTestCase(boolean generateServiceTestCase) {
+        this.generateServiceTestCase = generateServiceTestCase;
+    }
+
     public boolean isGenerateIbatisConfig() {
         return generateIbatisConfig;
+    }
+
+    public void setGenerateIbatisConfig(boolean generateIbatisConfig) {
+        this.generateIbatisConfig = generateIbatisConfig;
     }
 
     public boolean isGenerateSpringConfig() {
         return generateSpringConfig;
     }
 
+    public void setGenerateSpringConfig(boolean generateSpringConfig) {
+        this.generateSpringConfig = generateSpringConfig;
+    }
+
     public boolean isDatabaseDrop() {
         return databaseDrop;
+    }
+
+    public void setDatabaseDrop(boolean databaseDrop) {
+        this.databaseDrop = databaseDrop;
     }
 
     public boolean isDatabaseCreate() {
         return databaseCreate;
     }
 
+    public void setDatabaseCreate(boolean databaseCreate) {
+        this.databaseCreate = databaseCreate;
+    }
+
     public boolean isExecuteInitScript() {
         return executeInitScript;
+    }
+
+    public void setExecuteInitScript(boolean executeInitScript) {
+        this.executeInitScript = executeInitScript;
     }
 
     public boolean isProjectCompile() {
         return projectCompile;
     }
 
+    public void setProjectCompile(boolean projectCompile) {
+        this.projectCompile = projectCompile;
+    }
+
     public boolean isProjectTest() {
         return projectTest;
+    }
+
+    public void setProjectTest(boolean projectTest) {
+        this.projectTest = projectTest;
     }
 
     public List<PsiJavaFileImpl> getPsiFiles() {
@@ -107,70 +180,6 @@ public class ProjectConfig {
 
     public void setPsiFiles(List<PsiJavaFileImpl> psiFiles) {
         this.psiFiles = psiFiles;
-    }
-
-    public void setProjectDirectory(File projectDirectory) {
-        this.projectDirectory = projectDirectory;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public void setGenerateEntity(boolean generateEntity) {
-        this.generateEntity = generateEntity;
-    }
-
-    public void setGenerateService(boolean generateService) {
-        this.generateService = generateService;
-    }
-
-    public void setGenerateDAO(boolean generateDAO) {
-        this.generateDAO = generateDAO;
-    }
-
-    public void setGenerateIbatisSql(boolean generateIbatisSql) {
-        this.generateIbatisSql = generateIbatisSql;
-    }
-
-    public void setGenerateDDL(boolean generateDDL) {
-        this.generateDDL = generateDDL;
-    }
-
-    public void setGenerateResource(boolean generateResource) {
-        this.generateResource = generateResource;
-    }
-
-    public void setGenerateServiceTestCase(boolean generateServiceTestCase) {
-        this.generateServiceTestCase = generateServiceTestCase;
-    }
-
-    public void setGenerateIbatisConfig(boolean generateIbatisConfig) {
-        this.generateIbatisConfig = generateIbatisConfig;
-    }
-
-    public void setGenerateSpringConfig(boolean generateSpringConfig) {
-        this.generateSpringConfig = generateSpringConfig;
-    }
-
-    public void setDatabaseDrop(boolean databaseDrop) {
-        this.databaseDrop = databaseDrop;
-    }
-
-    public void setDatabaseCreate(boolean databaseCreate) {
-        this.databaseCreate = databaseCreate;
-    }
-
-    public void setExecuteInitScript(boolean executeInitScript) {
-        this.executeInitScript = executeInitScript;
-    }
-
-    public void setProjectCompile(boolean projectCompile) {
-        this.projectCompile = projectCompile;
-    }
-
-    public void setProjectTest(boolean projectTest) {
-        this.projectTest = projectTest;
     }
 }
 

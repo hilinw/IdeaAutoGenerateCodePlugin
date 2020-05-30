@@ -436,11 +436,10 @@ public class IOUtils {
         }
     }
 
-    public File write(File file,String source) throws IOException {
+    public static File write(File file,String source) throws IOException {
         if(file.exists()){
             file.delete();
         }
-        file.mkdirs();
         //File file = new File(dir, this.name);
         OutputStreamWriter writer = null;
 
@@ -448,7 +447,7 @@ public class IOUtils {
             writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
             writer.write(source);
         } finally {
-            this.close(writer);
+            close(writer);
         }
 
         return file;

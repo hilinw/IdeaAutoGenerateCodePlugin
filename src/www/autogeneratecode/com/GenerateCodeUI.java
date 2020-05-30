@@ -18,6 +18,7 @@ public class GenerateCodeUI extends JDialog {
     private JCheckBox checkBoxIbatis;
     private JCheckBox checkBoxLanage;
     private JCheckBox checkBoxDDL;
+    private JCheckBox checkBoxGSetter;
 
     protected ProjectConfig config = null;
 
@@ -53,6 +54,18 @@ public class GenerateCodeUI extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        checkBoxVo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(checkBoxVo.isSelected()){
+                    checkBoxGSetter.setEnabled(true);
+                    checkBoxGSetter.setSelected(true);
+                }else{
+                    checkBoxGSetter.setEnabled(false);
+                    checkBoxGSetter.setSelected(false);
+                }
+            }
+        });
     }
 
     private void onOK() {
@@ -61,6 +74,7 @@ public class GenerateCodeUI extends JDialog {
         CodeGenerator generator = new CodeGenerator();
 
         config.setGenerateEntity(checkBoxVo.isSelected());
+        config.setGenerateGetterAndSetter(checkBoxGSetter.isSelected());
         config.setGenerateService(checkBoxService.isSelected());
         config.setGenerateDAO(checkBoxDDL.isSelected());
         config.setGenerateIbatisSql(checkBoxIbatis.isSelected());
@@ -69,7 +83,8 @@ public class GenerateCodeUI extends JDialog {
         generator.setConfig(config);
         //generator.addEntity(entity);
         generator.generate();
-
+        generator.copyFile();
+        generator.reflash();
         //SelectionUtil.refreshProject(project);
         //MessageDialog.openInformation(this.getShell(), "利维坦提示", "代码生成成功");
 
@@ -96,8 +111,8 @@ public class GenerateCodeUI extends JDialog {
 //        Dimension screenSize = kit.getScreenSize();   // 获取屏幕的尺寸
 //        int screenWidth = screenSize.width/2;         // 获取屏幕的宽
 //        int screenHeight = screenSize.height/2;       // 获取屏幕的高
-//
-//
+
+
         int height = dialog.getPreferredSize().height;
         int width = dialog.getPreferredSize().width;
 //        System.out.println("width:"+width+",height:"+height);

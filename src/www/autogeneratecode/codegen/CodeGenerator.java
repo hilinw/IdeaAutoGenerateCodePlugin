@@ -6,10 +6,12 @@ import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import www.autogeneratecode.generator.JavaEntityGenerator;
 import www.autogeneratecode.model.Entity;
 import www.autogeneratecode.utils.CopyTask;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -133,11 +135,11 @@ public class CodeGenerator {
                 }
                 new CodeGenException("代码生成出错" + e2.getMessage());
             }
-            this.reflash();
+            //this.reflash();
         }
     }
 
-    private void reflash() {
+    public void reflash() {
         PsiJavaFileImpl pjf = this.config.getPsiFiles().get(0);
         String packageName = pjf.getPackageName();
         VirtualFile vf = pjf.getVirtualFile().getParent();
@@ -148,28 +150,29 @@ public class CodeGenerator {
                 vf = vf.getParent();
             }
         }
-        //System.out.println("vf:"+vf.getPath());
+        System.out.println("refresh file path :"+vf.getPath());
         vf.refresh(true, true);
 
     }
 
-    private File[] generateEntityFile(PsiJavaFileImpl psiJavaFileImpl) {
+    private File[] generateEntityFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
         PsiClass[] classes = psiJavaFileImpl.getClasses();
         File[] files = new File[classes.length];
         int i = 0;
-
+        String packageName = psiJavaFileImpl.getPackageName();
         for (PsiClass psiClass : classes) {
 
-            //JavaEntityGenerator generator = new JavaEntityGenerator(item);
+            JavaEntityGenerator generator = new JavaEntityGenerator(psiClass,packageName);
+            generator.setGenerateGetterAndSetter(config.isGenerateGetterAndSetter());
+            generator.generate();
+            files[i] = generator.write(this.config.getWorkSpace());
 
-
-            //files[i] = javaFile.write(this.config.getWorkSpace());
             if (this.getProjectDir() != null) {
                 this.fileTasks.add(new CopyTask(files[i], this.getEntityFileDir(psiJavaFileImpl)));
             }
 
             LOG.info("generate: '" + psiJavaFileImpl.getName() + "'  ok.");
-
+            i++;
         }
 
         return files;
@@ -189,12 +192,27 @@ public class CodeGenerator {
             newPath = filePath.substring(0,p);
             newPath = newPath + filePath.substring(p+9);
         }
-        File file = new File(newPath,psiJavaFileImpl.getVirtualFile().getName());
+        File file = new File(newPath);
         System.out.println("newJavaFilePath:"+file.getPath());
         return file;
 
     }
 
+    public void copyFile(){
+        try {
+            for (CopyTask copyTask : fileTasks) {
+
+                copyTask.execute();
+            }
+        }catch (IOException e){
+            if (LOG.isErrorEnabled()) {
+                LOG.error(e.getMessage(), e);
+            }
+            new CodeGenException("copy code error:" + e.getMessage());
+
+        }
+
+    }
 
     public ProjectConfig getConfig() {
         return config;

@@ -40,8 +40,8 @@ public class CopyTask {
         if (LOG.isInfoEnabled()) {
             LOG.info("copy to '" + destFile.getPath() + "'");
         }
-
         IOUtils.copy(this.file, destFile);
+        System.out.println("copy to '" + destFile.getPath() + "'");
     }
 
 }
