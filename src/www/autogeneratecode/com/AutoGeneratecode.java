@@ -43,10 +43,10 @@ public class AutoGeneratecode extends AnAction {
     }
 
     public void showInCenter(JDialog jDialog) {
-        Toolkit kit = Toolkit.getDefaultToolkit();    // 定义工具包
-        Dimension screenSize = kit.getScreenSize();   // 获取屏幕的尺寸
-        int screenW = screenSize.width / 2;         // 获取屏幕的宽
-        int screenH = screenSize.height / 2;       // 获取屏幕的高
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = kit.getScreenSize();
+        int screenW = screenSize.width / 2;
+        int screenH = screenSize.height / 2;
         int height = jDialog.getPreferredSize().height;
         int width = jDialog.getPreferredSize().width;
 
@@ -61,7 +61,7 @@ public class AutoGeneratecode extends AnAction {
         if (showMetadataDialog) {
             if (metadataDialogUI == null) {
                 metadataDialogUI = new MetadataDialogUI();
-                metadataDialogUI.setPreferredSize(new Dimension(500, 350));
+                metadataDialogUI.setPreferredSize(new Dimension(600, 400));
                 showInCenter(metadataDialogUI);
             }
             metadataDialogUI.setPsiJavaFileImpl(psiFiles.get(0));
@@ -84,9 +84,10 @@ public class AutoGeneratecode extends AnAction {
 //        System.out.println("WorkSpace:" + projectConfig.getWorkSpace());
 //        System.out.println("ProjectDirectory:" + projectConfig.getProjectDirectory());
 //        System.out.println("ShortName:" + projectConfig.getShortName());
-        generateCodeUI.getCurrentFile().setText(projectConfig.getProjectDirectory().getPath());
+
 
         generateCodeUI.setConfig(projectConfig);
+        generateCodeUI.init();
 
         generateCodeUI.pack();
 
@@ -118,7 +119,7 @@ public class AutoGeneratecode extends AnAction {
             return false;
         } else {
 
-            //检查是否为java文件并且是以metadata开头的路径
+            //check file is '.java' and it's package start with 'metadata.'
             if (editor != null) {
                 PsiFile currentEditorFile = PsiUtilBase.getPsiFileInEditor(editor, project);
                 if (currentEditorFile.getFileType().getName().equalsIgnoreCase("JAVA")) {

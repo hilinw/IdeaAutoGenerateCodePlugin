@@ -1,11 +1,14 @@
 package www.autogeneratecode.com;
 
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import www.autogeneratecode.codegen.CodeGenerator;
 import www.autogeneratecode.codegen.ProjectConfig;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class GenerateCodeUI extends JDialog {
     private JPanel contentPane;
@@ -15,6 +18,7 @@ public class GenerateCodeUI extends JDialog {
     private JLabel labAutoGenerateCode;
     private JCheckBox checkBoxVo;
     private JCheckBox checkBoxService;
+    private JCheckBox checkBoxDao;
     private JCheckBox checkBoxIbatis;
     private JCheckBox checkBoxLanage;
     private JCheckBox checkBoxDDL;
@@ -57,10 +61,10 @@ public class GenerateCodeUI extends JDialog {
         checkBoxVo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(checkBoxVo.isSelected()){
+                if (checkBoxVo.isSelected()) {
                     checkBoxGSetter.setEnabled(true);
                     checkBoxGSetter.setSelected(true);
-                }else{
+                } else {
                     checkBoxGSetter.setEnabled(false);
                     checkBoxGSetter.setSelected(false);
                 }
@@ -76,8 +80,10 @@ public class GenerateCodeUI extends JDialog {
         config.setGenerateEntity(checkBoxVo.isSelected());
         config.setGenerateGetterAndSetter(checkBoxGSetter.isSelected());
         config.setGenerateService(checkBoxService.isSelected());
-        config.setGenerateDAO(checkBoxDDL.isSelected());
+        config.setGenerateDAO(checkBoxDao.isSelected());
+        config.setGenerateDDL(checkBoxDDL.isSelected());
         config.setGenerateIbatisSql(checkBoxIbatis.isSelected());
+        config.setGenerateResource(checkBoxLanage.isSelected());
 
 
         generator.setConfig(config);
@@ -103,6 +109,29 @@ public class GenerateCodeUI extends JDialog {
     }
 
 
+    public void init() {
+
+        String javaFileName = null;
+        if (this.config != null) {
+            getCurrentFile().setText(this.config.getProjectDirectory().getPath());
+
+            if (this.config.getPsiFiles() != null) {
+                List<PsiJavaFileImpl> psiJavaFileImpls = this.config.getPsiFiles();
+                if (psiJavaFileImpls.size() > 0) {
+                    PsiClass[] psiClasss = psiJavaFileImpls.get(0).getClasses();
+                    javaFileName = psiClasss[0].getName();
+                }
+            }
+            if (javaFileName != null) {
+                checkBoxVo.setText("Generate " + javaFileName + ".java");
+                checkBoxService.setText("Generate " + javaFileName + "Service.java");
+                checkBoxDao.setText("Generate " + javaFileName + "Dao.java");
+                checkBoxIbatis.setText("Generate Ibatis Configuration File " + javaFileName + ".xml");
+
+            }
+        }
+    }
+
     public static void main(String[] args) {
         GenerateCodeUI dialog = new GenerateCodeUI();
 
@@ -117,9 +146,8 @@ public class GenerateCodeUI extends JDialog {
         int width = dialog.getPreferredSize().width;
 //        System.out.println("width:"+width+",height:"+height);
 
-        dialog.setSize(width,height);
+        dialog.setSize(width, height);
 //        dialog.setLocation(screenWidth - width / 2, screenHeight - height / 2);
-
 
 
         dialog.pack();

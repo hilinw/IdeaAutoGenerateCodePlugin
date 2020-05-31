@@ -76,7 +76,7 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
             sb.append(generateGetterAndSetter());
         }
 
-        //文件最后的}
+        //file last '}'
         sb.append("\n");
         sb.append("}");
 
