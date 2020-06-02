@@ -18,6 +18,7 @@ public class GenerateCodeUI extends JDialog {
     private JLabel labAutoGenerateCode;
     private JCheckBox checkBoxVo;
     private JCheckBox checkBoxService;
+    private JCheckBox checkBoxController;
     private JCheckBox checkBoxDao;
     private JCheckBox checkBoxIbatis;
     private JCheckBox checkBoxLanage;
@@ -80,6 +81,7 @@ public class GenerateCodeUI extends JDialog {
         config.setGenerateEntity(checkBoxVo.isSelected());
         config.setGenerateGetterAndSetter(checkBoxGSetter.isSelected());
         config.setGenerateService(checkBoxService.isSelected());
+        config.setGenerateController(checkBoxController.isSelected());
         config.setGenerateDAO(checkBoxDao.isSelected());
         config.setGenerateDDL(checkBoxDDL.isSelected());
         config.setGenerateIbatisSql(checkBoxIbatis.isSelected());
@@ -125,6 +127,7 @@ public class GenerateCodeUI extends JDialog {
             if (javaFileName != null) {
                 checkBoxVo.setText("Generate " + javaFileName + ".java");
                 checkBoxService.setText("Generate " + javaFileName + "Service.java");
+                checkBoxController.setText("Generate " + javaFileName + "Controller.java");
                 checkBoxDao.setText("Generate " + javaFileName + "Dao.java");
                 checkBoxIbatis.setText("Generate Ibatis Configuration File " + javaFileName + ".xml");
 

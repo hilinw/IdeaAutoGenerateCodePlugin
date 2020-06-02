@@ -160,20 +160,20 @@ public class CodeGenerator {
         File[] files = new File[classes.length];
         int i = 0;
         String packageName = psiJavaFileImpl.getPackageName();
-        for (PsiClass psiClass : classes) {
+//        for (PsiClass psiClass : classes) {
 
-            JavaEntityGenerator generator = new JavaEntityGenerator(psiClass,packageName);
-            generator.setGenerateGetterAndSetter(config.isGenerateGetterAndSetter());
-            generator.generate();
-            files[i] = generator.write(this.config.getWorkSpace());
+        JavaEntityGenerator generator = new JavaEntityGenerator(psiJavaFileImpl, packageName);
+        generator.setGenerateGetterAndSetter(config.isGenerateGetterAndSetter());
+        generator.generate();
+        files[i] = generator.write(this.config.getWorkSpace());
 
-            if (this.getProjectDir() != null) {
-                this.fileTasks.add(new CopyTask(files[i], this.getEntityFileDir(psiJavaFileImpl)));
-            }
-
-            LOG.info("generate: '" + psiJavaFileImpl.getName() + "'  ok.");
-            i++;
+        if (this.getProjectDir() != null) {
+            this.fileTasks.add(new CopyTask(files[i], this.getEntityFileDir(psiJavaFileImpl)));
         }
+
+        LOG.info("generate: '" + psiJavaFileImpl.getName() + "'  ok.");
+        i++;
+//        }
 
         return files;
 

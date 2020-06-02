@@ -73,7 +73,7 @@ public class AutoGeneratecode extends AnAction {
 
         if (generateCodeUI == null) {
             generateCodeUI = new GenerateCodeUI();
-            generateCodeUI.setPreferredSize(new Dimension(650, 380));
+            generateCodeUI.setPreferredSize(new Dimension(650, 400));
 
             showInCenter(generateCodeUI);
 

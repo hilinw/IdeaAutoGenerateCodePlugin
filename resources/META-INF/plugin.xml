@@ -2,7 +2,7 @@
   <id>com.autogeneratecode.plugin</id>
   <name>Auto Generate Code for Idea</name>
   <version>1.0</version>
-  <vendor email="autogeneratecode@yourcompany.com" url="http://www.autogeneratecode.com">autogeneratecode</vendor>
+  <vendor email="441089@qq.com" url="https://github.com/hilinw/IdeaAutoGenerateCodePlugin.git">IdeaAutoGenerateCodePlugin</vendor>
 
   <description><![CDATA[
       Auto Generate Code for Idea.<br>

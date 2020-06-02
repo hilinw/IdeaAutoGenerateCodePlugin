@@ -14,6 +14,7 @@ public class ProjectConfig {
     private boolean generateEntity = true;
     private boolean generateGetterAndSetter = true;
     private boolean generateService = true;
+    private boolean generateController = true;
     private boolean generateDAO = true;
     private boolean generateIbatisSql = true;
     private boolean generateDDL = true;
@@ -76,6 +77,14 @@ public class ProjectConfig {
 
     public void setGenerateService(boolean generateService) {
         this.generateService = generateService;
+    }
+
+    public boolean isGenerateController() {
+        return generateController;
+    }
+
+    public void setGenerateController(boolean generateController) {
+        this.generateController = generateController;
     }
 
     public boolean isGenerateDAO() {

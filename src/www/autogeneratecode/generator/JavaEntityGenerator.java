@@ -2,8 +2,8 @@ package www.autogeneratecode.generator;
 
 
 import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
+import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import www.autogeneratecode.utils.IOUtils;
 
 import java.io.File;
@@ -13,9 +13,8 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
 
     private boolean generateGetterAndSetter = true;
 
-    public JavaEntityGenerator(PsiClass psiClass,String packageName){
-       super(psiClass,packageName);
-
+    public JavaEntityGenerator(PsiJavaFileImpl psiJavaFileImpl, String packageName){
+       super(psiJavaFileImpl,packageName);
 
     }
 
@@ -49,8 +48,8 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
         //导入import
         sb.append("import java.io.Serializable;");
         sb.append("\n");
-        sb.append("import java.util.Date;");
-        sb.append("\n");
+        sb.append(this.generateImports());
+
 
         PsiAnnotation psiAnnotation = psiClass.getAnnotation("www.autogeneratecode.model.Comment");
         sb.append(getAnnotate(psiAnnotation,"",""));
