@@ -85,7 +85,7 @@ public class AutoGeneratecode extends AnAction {
 //        System.out.println("ProjectDirectory:" + projectConfig.getProjectDirectory());
 //        System.out.println("ShortName:" + projectConfig.getShortName());
 
-
+        generateCodeUI.getErrMsgLable().setText("");
         generateCodeUI.setConfig(projectConfig);
         generateCodeUI.init();
 

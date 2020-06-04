@@ -6,6 +6,7 @@ import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import www.autogeneratecode.generator.DDLGenerator;
 import www.autogeneratecode.generator.JavaEntityGenerator;
 import www.autogeneratecode.model.Entity;
 import www.autogeneratecode.utils.CopyTask;
@@ -33,7 +34,7 @@ public class CodeGenerator {
     }
 
 
-    public void generate() {
+    public void generate() throws  CodeGenException{
 
         if (this.config.getWorkSpace() == null) {
             throw new CodeGenException("代码生成的工作目录未设置");
@@ -88,9 +89,9 @@ public class CodeGenerator {
 //                        this.generateEntityEnum(entity);
                     }
 
-//                    if (this.config.isGenerateDDL()) {
-//                        this.generateDDLFile(entity);
-//                    }
+                    if (this.config.isGenerateDDL()) {
+                        this.generateDDLFile(psiJavaFileImpl);
+                    }
 
 //                    if (entity.isEnum()) {
 //                        this.generateEnum(entity);
@@ -124,16 +125,16 @@ public class CodeGenerator {
                 }
 
 
-            } catch (CodeGenException e1) {
+            } catch (IOException e1) {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(e1.getMessage(), e1);
                 }
-                throw e1;
-            } catch (Exception e2) {
-                if (LOG.isErrorEnabled()) {
-                    LOG.error(e2.getMessage(), e2);
-                }
-                new CodeGenException("代码生成出错" + e2.getMessage());
+                throw new CodeGenException(e1);
+//            } catch (Exception e2) {
+//                if (LOG.isErrorEnabled()) {
+//                    LOG.error(e2.getMessage(), e2);
+//                }
+//                new CodeGenException("代码生成出错" + e2.getMessage());
             }
             //this.reflash();
         }
@@ -179,6 +180,29 @@ public class CodeGenerator {
 
     }
 
+    private File[] generateDDLFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
+        PsiClass[] classes = psiJavaFileImpl.getClasses();
+        File[] files = new File[classes.length];
+        int i = 0;
+        String packageName = psiJavaFileImpl.getPackageName();
+//        for (PsiClass psiClass : classes) {
+
+        DDLGenerator generator = new DDLGenerator(psiJavaFileImpl);
+
+        generator.generate();
+        files[i] = generator.write(this.config.getWorkSpace());
+
+        if (this.getProjectDir() != null) {
+            this.fileTasks.add(new CopyTask(files[i], this.getEntityFileDir(psiJavaFileImpl)));
+        }
+
+        LOG.info("generate: '" + psiJavaFileImpl.getName() + "'  ok.");
+        i++;
+//        }
+
+        return files;
+
+    }
 
     /**
      * 生成VO文件的路径。

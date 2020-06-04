@@ -2,6 +2,7 @@ package www.autogeneratecode.com;
 
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
+import www.autogeneratecode.codegen.CodeGenException;
 import www.autogeneratecode.codegen.CodeGenerator;
 import www.autogeneratecode.codegen.ProjectConfig;
 
@@ -24,7 +25,8 @@ public class GenerateCodeUI extends JDialog {
     private JCheckBox checkBoxLanage;
     private JCheckBox checkBoxDDL;
     private JCheckBox checkBoxGSetter;
-
+    private JPanel msgPanel;
+    private JLabel errMsgLable;
     protected ProjectConfig config = null;
 
 
@@ -87,15 +89,20 @@ public class GenerateCodeUI extends JDialog {
         config.setGenerateIbatisSql(checkBoxIbatis.isSelected());
         config.setGenerateResource(checkBoxLanage.isSelected());
 
+        try {
+            generator.setConfig(config);
+            //generator.addEntity(entity);
 
-        generator.setConfig(config);
-        //generator.addEntity(entity);
-        generator.generate();
-        generator.copyFile();
-        generator.reflash();
-        //SelectionUtil.refreshProject(project);
-        //MessageDialog.openInformation(this.getShell(), "利维坦提示", "代码生成成功");
-
+            generator.generate();
+            generator.copyFile();
+            generator.reflash();
+            //SelectionUtil.refreshProject(project);
+            //MessageDialog.openInformation(this.getShell(), "利维坦提示", "代码生成成功");
+        }catch ( CodeGenException e){
+            errMsgLable.setText("Error:"+e.getMessage());
+            errMsgLable.setForeground(Color.red);
+            return;
+        }
 
         dispose();
     }
@@ -164,5 +171,13 @@ public class GenerateCodeUI extends JDialog {
 
     public void setConfig(ProjectConfig config) {
         this.config = config;
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
+
+    public JLabel getErrMsgLable() {
+        return errMsgLable;
     }
 }
