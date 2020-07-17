@@ -13,8 +13,14 @@ import java.util.List;
 public abstract class JavaFileGenerator {
 
     protected String packageName = "";
+    private boolean isSameDir = false;
+    private boolean addTransactional = true;
 
+    // 源文件的导入部分
+    protected List<String> sourceFileImports = new ArrayList<String>();
+    // 生成文件的导入部分
     protected List<String> imports = new ArrayList<String>();
+    private String extClass;
 
     protected PsiClass psiClass = null;
     protected PsiJavaFileImpl psiJavaFileImpl = null;
@@ -29,6 +35,11 @@ public abstract class JavaFileGenerator {
             packageName = packagename.substring(9);
         } else {
             packageName = packagename;
+        }
+        PsiClass superClass = this.psiClass.getSuperClass();
+        if(superClass != null && !"Object".equalsIgnoreCase(superClass.getName())){
+            this.extClass = superClass.getName();
+            //System.out.println("----------- superClass:"+this.extClass );
         }
 
         ignoreImports.add("www.autogeneratecode.model.Column");
@@ -69,10 +80,18 @@ public abstract class JavaFileGenerator {
             String importString = "";
             for (PsiImportStatementBase psiImportStatementBase : psiImportList.getAllImportStatements()) {
                 importString = psiImportStatementBase.getImportReference().getQualifiedName();
+                if(importString.startsWith("metadata.")){
+                    importString = importString.substring(9);
+                }
                 if (!ignoreImports.contains(importString)) {
                     imports.add(importString);
                 }
             }
+//            for (String importString : sourceFileImports) {
+//                if (!ignoreImports.contains(importString)) {
+//                    imports.add(importString);
+//                }
+//            }
         }
 
     }
@@ -89,6 +108,46 @@ public abstract class JavaFileGenerator {
         this.psiClass = psiClass;
     }
 
+    public boolean isSameDir() {
+        return isSameDir;
+    }
+
+    public void setSameDir(boolean sameDir) {
+        isSameDir = sameDir;
+    }
+
+    public boolean isAddTransactional() {
+        return addTransactional;
+    }
+
+    public void setAddTransactional(boolean addTransactional) {
+        this.addTransactional = addTransactional;
+    }
+
+    public List<String> getSourceFileImports() {
+        return sourceFileImports;
+    }
+
+    public void setSourceFileImports(List<String> sourceFileImports) {
+        this.sourceFileImports = sourceFileImports;
+    }
+
+    public List<String> getImports() {
+        return imports;
+    }
+
+    public void setImports(List<String> imports) {
+        this.imports = imports;
+    }
+
+    public String getExtClass() {
+        return extClass;
+    }
+
+    public void setExtClass(String extClass) {
+        this.extClass = extClass;
+    }
+
     protected String generateImports() {
         StringBuilder sb = new StringBuilder();
 
@@ -102,10 +161,16 @@ public abstract class JavaFileGenerator {
 
     protected String getFields() {
         PsiField[] psiAllFields = psiClass.getAllFields();
+        PsiClass superPsiClass = psiClass.getSuperClass();
+        PsiField[] superfields = superPsiClass.getAllFields();
 
         StringBuilder sb = new StringBuilder();
 
         for (PsiField psiField : psiAllFields) {
+            if (isSupperField(psiField, superfields)) {
+                continue;
+            }
+
             PsiAnnotation psiAnnotation = psiField.getAnnotation("www.autogeneratecode.model.Comment");
             sb.append("\n\t");
             sb.append("private ");
@@ -119,6 +184,15 @@ public abstract class JavaFileGenerator {
 
         return sb.toString();
 
+    }
+    protected boolean isSupperField(PsiField field, PsiField[] fields) {
+        boolean isSupperField = false;
+        for (PsiField field2 : fields) {
+            if (field2.getName().equals(field.getName())) {
+                return true;
+            }
+        }
+        return isSupperField;
     }
 
     protected String getPsiFieldTypeName(PsiField psiField) {

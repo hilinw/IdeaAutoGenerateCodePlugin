@@ -6,8 +6,7 @@ import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import www.autogeneratecode.generator.DDLGenerator;
-import www.autogeneratecode.generator.JavaEntityGenerator;
+import www.autogeneratecode.generator.*;
 import www.autogeneratecode.model.Entity;
 import www.autogeneratecode.utils.CopyTask;
 
@@ -65,76 +64,33 @@ public class CodeGenerator {
                         if (this.config.isGenerateEntity()) {
                             this.generateEntityFile(psiJavaFileImpl);
                         }
-//
-//                        if (this.config.isGenerateDAO()) {
-//                            this.generateDaoFile(entity);
-//                        }
-//
-//                        if (this.config.isGenerateService()) {
-//                            this.generateServiceFile(entity);
-//                        }
-//
-//                        if (this.config.isGenerateServiceTestCase()) {
-//                            this.generateTestServiceFile(entity);
-//                        }
-//
-//                        if (this.config.isGenerateIbatisSql()) {
-//                            this.generateIbatisSqlFile(entity);
-//                        }
-//
-//                        if (this.config.isGenerateResource()) {
-//                            this.generateResource(entity);
-//                        }
-//
-//                        this.generateEntityEnum(entity);
+                        if (this.config.isGenerateController()) {
+                            this.generateControllerFile(psiJavaFileImpl);
+                        }
+                        if (this.config.isGenerateService()) {
+                            this.generateServiceFile(psiJavaFileImpl);
+                        }
+                        if (this.config.isGenerateDao()) {
+                            this.generateDaoFile(psiJavaFileImpl);
+                        }
+                        if (this.config.isGenerateIbatisSql()) {
+                            this.generateSqlMappingFile(psiJavaFileImpl);
+                        }
+                        if (this.config.isGenerateDDL()) {
+                            this.generateDDLFile(psiJavaFileImpl);
+                        }
                     }
 
-                    if (this.config.isGenerateDDL()) {
-                        this.generateDDLFile(psiJavaFileImpl);
-                    }
-
-//                    if (entity.isEnum()) {
-//                        this.generateEnum(entity);
-//                    }
                 }
 
                 if (this.getProjectDir() != null) {
 
-
-//                    var7 = this.fileTasks.iterator();
-//
-//                    while(var7.hasNext()) {
-//                        CopyTask item = (CopyTask)var7.next();
-//                        item.execute();
-//                    }
-//
-//                    if (this.config.isGenerateIbatisConfig()) {
-//                        this.generateIbatisConfig();
-//                    }
-//
-//                    if (this.config.isGenerateSpringConfig()) {
-//                        this.generateSpringConfig();
-//                        this.generateSpringContextConfig();
-//                    }
-//
-//                    if (this.config.isDatabaseCreate()) {
-//                        this.databaseCreate();
-//                    }
-
-
                 }
-
-
             } catch (IOException e1) {
                 if (LOG.isErrorEnabled()) {
                     LOG.error(e1.getMessage(), e1);
                 }
                 throw new CodeGenException(e1);
-//            } catch (Exception e2) {
-//                if (LOG.isErrorEnabled()) {
-//                    LOG.error(e2.getMessage(), e2);
-//                }
-//                new CodeGenException("代码生成出错" + e2.getMessage());
             }
             //this.reflash();
         }
@@ -161,23 +117,119 @@ public class CodeGenerator {
         File[] files = new File[classes.length];
         int i = 0;
         String packageName = psiJavaFileImpl.getPackageName();
-//        for (PsiClass psiClass : classes) {
 
         JavaEntityGenerator generator = new JavaEntityGenerator(psiJavaFileImpl, packageName);
         generator.setGenerateGetterAndSetter(config.isGenerateGetterAndSetter());
+        generator.setSameDir(config.isSameDir());
         generator.generate();
         files[i] = generator.write(this.config.getWorkSpace());
 
         if (this.getProjectDir() != null) {
-            this.fileTasks.add(new CopyTask(files[i], this.getEntityFileDir(psiJavaFileImpl)));
+            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,"vo")));
         }
-
         LOG.info("generate: '" + psiJavaFileImpl.getName() + "'  ok.");
         i++;
-//        }
 
         return files;
 
+    }
+
+    private File generateControllerFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
+
+        PsiClass[] classes = psiJavaFileImpl.getClasses();
+        File[] files = new File[classes.length];
+        int i = 0;
+        String packageName = psiJavaFileImpl.getPackageName();
+
+        JavaControllerGenerator generator = new JavaControllerGenerator(psiJavaFileImpl, packageName);
+        generator.setSameDir(config.isSameDir());
+        generator.generate();
+        files[i] = generator.write(this.config.getWorkSpace());
+
+
+        if (this.getProjectDir() != null) {
+            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,"controller")));
+        }
+
+        LOG.info("generate: '" + files[i].getName() + "'  ok.");
+        System.out.println("generate: '" + files[i].getName() + "'  ok.");
+
+        return files[i];
+
+    }
+
+
+    private void generateServiceFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
+
+        PsiClass[] classes = psiJavaFileImpl.getClasses();
+        File[] files = new File[classes.length];
+        int i = 0;
+        String packageName = psiJavaFileImpl.getPackageName();
+
+        JavaServiceGenerator generator = new JavaServiceGenerator(psiJavaFileImpl, packageName);
+        generator.setSameDir(config.isSameDir());
+        generator.generate();
+        files[i] = generator.write(this.config.getWorkSpace());
+
+
+        if (this.getProjectDir() != null) {
+            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,"service")));
+        }
+
+        System.out.println("generate: '" + files[i].getName() + "'  ok.");
+
+        // 写实现类
+        files[i]  = generator.writeImpl(this.config.getWorkSpace());
+
+        if (this.getProjectDir() != null) {
+            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,"service" + File.separator + "impl")));
+        }
+
+        System.out.println("generate: '" + files[i].getName() + "'  ok.");
+
+
+    }
+
+    private File generateDaoFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
+
+        PsiClass[] classes = psiJavaFileImpl.getClasses();
+        File[] files = new File[classes.length];
+        int i = 0;
+        String packageName = psiJavaFileImpl.getPackageName();
+
+        JavaDaoGenerator generator = new JavaDaoGenerator(psiJavaFileImpl, packageName);
+        generator.setSameDir(config.isSameDir());
+        generator.generate();
+        files[i] = generator.write(this.config.getWorkSpace());
+
+
+        if (this.getProjectDir() != null) {
+            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,"dao")));
+        }
+
+        LOG.info("generate: '" + files[i].getName() + "'  ok.");
+        System.out.println("generate: '" + files[i].getName() + "'  ok.");
+
+        return files[i];
+
+    }
+
+
+    private File generateSqlMappingFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
+
+        PsiClass[] classes = psiJavaFileImpl.getClasses();
+        File[] files = new File[classes.length];
+        int i = 0;
+        String packageName = psiJavaFileImpl.getPackageName();
+        SqlMappingGenerator generator = new SqlMappingGenerator(psiJavaFileImpl, packageName);
+        generator.setSameDir(config.isSameDir());
+        files[i] = generator.write(this.config.getWorkSpace());
+        if (this.getProjectDir() != null) {
+            this.fileTasks.add(new CopyTask(files[i], this.getSqlFileDir(psiJavaFileImpl,"sql")));
+        }
+        LOG.info("generate: '" + files[i].getName() + "'  ok.");
+        System.out.println("generate: '" + files[i].getName() + "'  ok.");
+        return files[i];
     }
 
     private File[] generateDDLFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
@@ -193,7 +245,7 @@ public class CodeGenerator {
         files[i] = generator.write(this.config.getWorkSpace());
 
         if (this.getProjectDir() != null) {
-            this.fileTasks.add(new CopyTask(files[i], this.getEntityFileDir(psiJavaFileImpl)));
+            this.fileTasks.add(new CopyTask(files[i], this.getSqlFileDir(psiJavaFileImpl,"sql")));
         }
 
         LOG.info("generate: '" + psiJavaFileImpl.getName() + "'  ok.");
@@ -205,19 +257,51 @@ public class CodeGenerator {
     }
 
     /**
-     * 生成VO文件的路径。
-     * 在原来的路径里面去掉metadata
+     * 生成VO文件的路径。 在原来的路径里面去掉metadata
      */
-    private File getEntityFileDir(PsiJavaFileImpl psiJavaFileImpl) {
+    private File getJavaFileDir(PsiJavaFileImpl psiJavaFileImpl,String childDir) {
+
         String filePath = psiJavaFileImpl.getVirtualFile().getParent().getPath();
         int p = filePath.indexOf("metadata");
-        String newPath  = "";
-        if(p>0){
-            newPath = filePath.substring(0,p);
-            newPath = newPath + filePath.substring(p+9);
+        String newPath = "";
+        if (p > 0) {
+            newPath = filePath.substring(0, p);
+            newPath = newPath + filePath.substring(p + 9);
         }
+
+        if (!config.isSameDir()) {
+            if (childDir != null && childDir.trim().length() > 0) {
+
+                newPath = newPath + File.separator + childDir;
+            }
+        }
+
         File file = new File(newPath);
-        System.out.println("newJavaFilePath:"+file.getPath());
+        System.out.println("newJavaFilePath:" + file.getPath());
+        return file;
+
+    }
+
+    /**
+     * 生成sql文件的路径。 在原来的路径里面去掉metadata
+     */
+    private File getSqlFileDir(PsiJavaFileImpl psiJavaFileImpl,String childDir) {
+
+//		String filePath = psiJavaFileImpl.getVirtualFile().getParent().getPath();
+        String filePath = psiJavaFileImpl.getVirtualFile().getParent().getPath();
+        int p = filePath.indexOf("metadata");
+        String newPath = "";
+        if (p > 0) {
+            newPath = filePath.substring(0, p);
+            newPath = newPath + filePath.substring(p + 9);
+        }
+
+        if (childDir != null && childDir.trim().length() > 0) {
+            newPath = newPath + File.separator + childDir;
+        }
+
+        File file = new File(newPath);
+        System.out.println("newJavaFilePath:" + file.getPath());
         return file;
 
     }

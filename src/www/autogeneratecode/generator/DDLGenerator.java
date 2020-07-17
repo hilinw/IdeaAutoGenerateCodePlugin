@@ -43,7 +43,7 @@ public class DDLGenerator {
 
         dir.mkdirs();
 
-        File file = new File(dir, psiClass.getName() + ".sql");
+        File file = new File(dir,  "Create-"+ psiClass.getName() + ".sql");
         file = IOUtils.write(file, getDDL());
         System.out.println("Generate DDL file path:" + file.getPath());
         return file;
@@ -63,7 +63,7 @@ public class DDLGenerator {
         sb.append(generateFields());
 
         //file last );
-        //sb.append("\n");
+        sb.append("\n");
         sb.append(");");
 
         //如果有ID字段，增加PK

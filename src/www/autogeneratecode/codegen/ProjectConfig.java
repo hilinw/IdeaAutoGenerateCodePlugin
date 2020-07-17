@@ -4,6 +4,7 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProjectConfig {
@@ -15,7 +16,7 @@ public class ProjectConfig {
     private boolean generateGetterAndSetter = true;
     private boolean generateService = true;
     private boolean generateController = true;
-    private boolean generateDAO = true;
+    private boolean generateDao = true;
     private boolean generateIbatisSql = true;
     private boolean generateDDL = true;
     private boolean generateResource = true;
@@ -29,7 +30,11 @@ public class ProjectConfig {
     private boolean projectCompile = true;
     private boolean projectTest = false;
 
+    private boolean isSameDir = false;
+    private boolean addTransactional = true;
     protected List<PsiJavaFileImpl> psiFiles = null;
+    protected List<String> imports = new ArrayList<String>();
+    private String extClass;
 
     public File getWorkSpace() {
         return workSpace;
@@ -87,14 +92,12 @@ public class ProjectConfig {
         this.generateController = generateController;
     }
 
-    public boolean isGenerateDAO() {
-        return generateDAO;
+    public boolean isGenerateDao() {
+        return generateDao;
     }
-
-    public void setGenerateDAO(boolean generateDAO) {
-        this.generateDAO = generateDAO;
+    public void setGenerateDao(boolean generateDao) {
+        this.generateDao = generateDao;
     }
-
     public boolean isGenerateIbatisSql() {
         return generateIbatisSql;
     }
@@ -189,6 +192,38 @@ public class ProjectConfig {
 
     public void setPsiFiles(List<PsiJavaFileImpl> psiFiles) {
         this.psiFiles = psiFiles;
+    }
+
+    public boolean isSameDir() {
+        return isSameDir;
+    }
+
+    public void setSameDir(boolean sameDir) {
+        isSameDir = sameDir;
+    }
+
+    public boolean isAddTransactional() {
+        return addTransactional;
+    }
+
+    public void setAddTransactional(boolean addTransactional) {
+        this.addTransactional = addTransactional;
+    }
+
+    public List<String> getImports() {
+        return imports;
+    }
+
+    public void setImports(List<String> imports) {
+        this.imports = imports;
+    }
+
+    public String getExtClass() {
+        return extClass;
+    }
+
+    public void setExtClass(String extClass) {
+        this.extClass = extClass;
     }
 }
 

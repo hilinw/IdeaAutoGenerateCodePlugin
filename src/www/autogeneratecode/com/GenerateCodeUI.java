@@ -27,6 +27,8 @@ public class GenerateCodeUI extends JDialog {
     private JCheckBox checkBoxGSetter;
     private JPanel msgPanel;
     private JLabel errMsgLable;
+    private JCheckBox checkTransactional;
+    private JCheckBox checkSameDir;
     protected ProjectConfig config = null;
 
 
@@ -73,10 +75,21 @@ public class GenerateCodeUI extends JDialog {
                 }
             }
         });
+        checkBoxService.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (checkBoxService.isSelected()) {
+                    checkTransactional.setEnabled(true);
+                    checkTransactional.setSelected(true);
+                } else {
+                    checkTransactional.setEnabled(false);
+                    checkTransactional.setSelected(false);
+                }
+            }
+        });
     }
 
     private void onOK() {
-        // add your code here
 
         CodeGenerator generator = new CodeGenerator();
 
@@ -84,10 +97,11 @@ public class GenerateCodeUI extends JDialog {
         config.setGenerateGetterAndSetter(checkBoxGSetter.isSelected());
         config.setGenerateService(checkBoxService.isSelected());
         config.setGenerateController(checkBoxController.isSelected());
-        config.setGenerateDAO(checkBoxDao.isSelected());
+        config.setGenerateDao(checkBoxDao.isSelected());
         config.setGenerateDDL(checkBoxDDL.isSelected());
         config.setGenerateIbatisSql(checkBoxIbatis.isSelected());
-        config.setGenerateResource(checkBoxLanage.isSelected());
+        config.setSameDir(checkSameDir.isSelected());
+        config.setAddTransactional(checkTransactional.isSelected());
 
         try {
             generator.setConfig(config);
@@ -96,19 +110,16 @@ public class GenerateCodeUI extends JDialog {
             generator.generate();
             generator.copyFile();
             generator.reflash();
-            //SelectionUtil.refreshProject(project);
-            //MessageDialog.openInformation(this.getShell(), "利维坦提示", "代码生成成功");
+
         }catch ( CodeGenException e){
             errMsgLable.setText("Error:"+e.getMessage());
             errMsgLable.setForeground(Color.red);
             return;
         }
-
         dispose();
     }
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
     }
 
@@ -137,7 +148,8 @@ public class GenerateCodeUI extends JDialog {
                 checkBoxController.setText("Generate " + javaFileName + "Controller.java");
                 checkBoxDao.setText("Generate " + javaFileName + "Dao.java");
                 checkBoxIbatis.setText("Generate Ibatis Configuration File " + javaFileName + ".xml");
-
+                checkBoxIbatis.setText("Generate " + "sqlmapping-" + javaFileName + ".xml");
+                checkBoxDDL.setText("Generate " + "Create-" +javaFileName + ".sql");
             }
         }
     }

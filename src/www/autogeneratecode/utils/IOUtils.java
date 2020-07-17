@@ -315,11 +315,11 @@ public class IOUtils {
             return;
         try {
             x.getInputStream().close();
-        } catch (Exception _) {
+        } catch (Exception e) {
         }
         try {
             x.getOutputStream().close();
-        } catch (Exception _) {
+        } catch (Exception e) {
         }
     }
 

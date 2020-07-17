@@ -194,6 +194,10 @@ public class AutoGeneratecode extends AnAction {
 
         projectConfig.setPsiFiles(psiFiles);
 
+
+//        projectConfig.setImports(SelectionUtil.getImports(fileInfo));
+//        projectConfig.setExtClass(SelectionUtil.getExtendsFile(fileInfo));
+
         return projectConfig;
     }
 

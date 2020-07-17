@@ -2,6 +2,7 @@ package www.autogeneratecode.generator;
 
 
 import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import www.autogeneratecode.utils.IOUtils;
@@ -20,10 +21,6 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
 
     @Override
     protected void generateJavaFile() {
-//        PsiReferenceList psiReferenceList = psiClass.getImplementsList();
-//        PsiField[] psiFields = psiClass.getFields();
-//        PsiField[] psiAllFields = psiClass.getAllFields();
-
 
     }
 
@@ -31,7 +28,7 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
 
         dir.mkdirs();
 
-        File file = new File(dir,psiClass.getName()+".java");
+        File file = new File(dir,psiClass.getName()+"VO.java");
         file = IOUtils.write(file,getSource());
         System.out.println("Generate JavaFile source path:"+file.getPath());
         return file;
@@ -42,7 +39,12 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
         StringBuilder sb = new StringBuilder();
         //包名
         sb.append("package ");
-        sb.append(packageName).append(";");
+        sb.append(packageName);
+        if (isSameDir()) {
+            sb.append(";");
+        } else {
+            sb.append(".vo;");
+        }
         sb.append("\n\n");
 
         //导入import
@@ -54,8 +56,16 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
         PsiAnnotation psiAnnotation = psiClass.getAnnotation("www.autogeneratecode.model.Comment");
         sb.append(getAnnotate(psiAnnotation,"",""));
 
+//        sb.append("\n");
+//        sb.append("public class ").append(psiClass.getName()).append(" implements  Serializable {");
+
         sb.append("\n");
-        sb.append("public class ").append(psiClass.getName()).append(" implements  Serializable {");
+        sb.append("public class ").append(psiClass.getName()).append("VO ");
+        if (this.getExtClass() != null && this.getExtClass().trim().length() > 0) {
+            sb.append("extends ").append(this.getExtClass().trim()).append("VO");
+        }
+        sb.append(" implements Serializable {");
+
         sb.append("\n");
         sb.append("\n");
         sb.append("\t");
@@ -67,7 +77,7 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
 
         sb.append("\n");
         sb.append("\n\t");
-        sb.append("public ").append(psiClass.getName()).append("() {");
+        sb.append("public ").append(psiClass.getName()).append("VO").append("() {");
         sb.append("\n\t");
         sb.append("}");
 
@@ -87,12 +97,17 @@ public class JavaEntityGenerator  extends JavaFileGenerator  {
 
         StringBuilder sb = new StringBuilder();
         PsiField[] psiAllFields = psiClass.getAllFields();
+        PsiClass superPsiClass = psiClass.getSuperClass();
+        PsiField[] superfields = superPsiClass.getAllFields();
+
         PsiAnnotation psiAnnotation = null;
         String fieldType = "";
         String soruceFieldName = "";
         String fieldName = "";
         for (PsiField psiField : psiAllFields) {
-
+            if (isSupperField(psiField, superfields)) {
+                continue;
+            }
             fieldType = getPsiFieldTypeName(psiField);
             soruceFieldName = psiField.getName();
             fieldName = soruceFieldName;
