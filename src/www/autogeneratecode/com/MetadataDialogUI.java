@@ -135,6 +135,7 @@ public class MetadataDialogUI extends JDialog {
         sb.append(newPackageName);
 
         sb.append(";\n");
+        sb.append("import java.util.Date;\n");
         sb.append("\n");
         sb.append("import www.autogeneratecode.model.Column;\n");
         sb.append("import www.autogeneratecode.model.Comment;\n");
@@ -143,29 +144,66 @@ public class MetadataDialogUI extends JDialog {
 
         sb.append("\n");
 
-
         sb.append("@Entity\n");
         sb.append("@Comment(content = \"ExampleFile\")\n");
         sb.append("@Table(name=\"T_ExampleFile\")\n");
+
+        sb.append("\n");
+        sb.append("\n");
+
+        sb.append("/**\n");
+        sb.append("* note:\n");
+        sb.append(
+                "* import class:(Entity,Column,Comment,Table) is in jarfile: auto_generate_code_mode.jar, you can download from :\n");
+        sb.append("* https://github.com/hilinw/IdeaAutoGenerateCodePlugin.git  dir: lib/ \n");
+        sb.append("* \n");
+        sb.append("*/\n");
+
+        sb.append("\n");
+        sb.append("\n");
+
         sb.append("public class ExampleFile {\n");
+
+        sb.append("\n");
+        sb.append("    @Comment(content=\"ID\")\n");
+        sb.append("    @Column(name=\"FID\", dataType=\"decimal\", precision=32)\n");
+        sb.append("    public long id;\n");
+        sb.append(" \n");
 
         sb.append("\n");
         sb.append("    @Comment(content=\"用户ID\")\n");
         sb.append("    @Column(name=\"FUSERID\", dataType=\"decimal\", precision=32)\n");
-        sb.append("    public long id;\n");
+        sb.append("    public long userId;\n");
         sb.append(" \n");
-
-
 
         sb.append("    @Comment(content=\"用户名\")\n");
         sb.append("    @Column(name=\"FNAME\", dataType=\"VARCHAR\" ,nullable=false ,length=50)\n");
         sb.append("    public String name;\n");
         sb.append("\n");
 
-
         sb.append("    @Comment(content=\"用户编码\")\n");
         sb.append("    @Column(name=\"FNUMBER\", dataType=\"VARCHAR\" ,nullable=false ,length=20)\n");
         sb.append("    public String number;\n");
+        sb.append("\n");
+
+        sb.append("    @Comment(content=\"状态：0 在职，1离职，\")\n");
+        sb.append("    @Column(name=\"Fstatus\", dataType=\"int\" , precision=1)\n");
+        sb.append("    public int status;\n");
+        sb.append("\n");
+
+        sb.append("    @Comment(content=\"是否禁用\")\n");
+        sb.append("    @Column(name=\"FISDELETE\", dataType=\"int\" , nullable=false)\n");
+        sb.append("    public boolean isDelete;\n");
+        sb.append("\n");
+
+        sb.append("    @Comment(content=\"创建日期\")\n");
+        sb.append("    @Column(name=\"FCreateDate\", dataType=\"Date\" ,nullable=false ,length=20)\n");
+        sb.append("    public Date createDate;\n");
+        sb.append("\n");
+
+        sb.append("    @Comment(content=\"更新日期\")\n");
+        sb.append("    @Column(name=\"FUpdataDate\", dataType=\"Date\" ,nullable=false ,length=20)\n");
+        sb.append("    public Date updataDate;\n");
         sb.append("\n");
 
         sb.append("}\n");
