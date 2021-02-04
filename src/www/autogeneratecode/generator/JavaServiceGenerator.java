@@ -27,7 +27,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 
 		dir.mkdirs();
 
-		File file = new File(dir, psiClass.getName() + "Service" + ".java");
+		File file = new File(dir, "I"+psiClass.getName() + "Service" + ".java");
 		file = IOUtils.write(file, getInterfaceSource());
 		System.out.println("Generate JavaFile source path:" + file.getPath());
 		return file;
@@ -176,7 +176,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		} else {
 			sb.append(".service.");
 		}
-		sb.append(sourceName).append("Service").append(";\n");
+		sb.append("I").append(sourceName).append("Service").append(";\n");
 
 //		Comment comment = javaClass.getAnnotation(Comment.class);
 //		sb.append(getCommentContent(comment, "", "ServiceImpl of "));

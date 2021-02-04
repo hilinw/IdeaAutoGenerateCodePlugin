@@ -17,7 +17,9 @@ public class SqlMappingGenerator {
 	protected PsiClass psiClass = null;
 	protected PsiJavaFileImpl psiJavaFileImpl = null;
 	private boolean isSameDir = false;
-	
+
+	protected boolean hasPk = false;
+	protected String pkColName = "";
 
 	public SqlMappingGenerator(PsiJavaFileImpl psiJavaFileImpl, String packagename) {
 		this.psiJavaFileImpl = psiJavaFileImpl;
@@ -41,7 +43,7 @@ public class SqlMappingGenerator {
 	public File write(File dir) throws IOException {
 
 		dir.mkdirs();
-
+		this.genPkColName();
 		File file = new File(dir, "sqlmapping-" + psiClass.getName() + ".xml");
 		file = IOUtils.write(file, getSource());
 		System.out.println("Generate sqlmapping source path:" + file.getPath());
@@ -82,6 +84,9 @@ public class SqlMappingGenerator {
 		sb.append(daoName);
 		sb.append("\">\n");
 
+		sb.append("\n");
+		sb.append(getResultMap(tableName, voName, daoName));
+
 		sb.append("\n\n");
 		sb.append(getAddMethod(tableName, voName, daoName));
 		sb.append("\n\n");
@@ -102,6 +107,78 @@ public class SqlMappingGenerator {
 		sb.append("\n");
 		sb.append("</mapper>");
 
+		return sb.toString();
+	}
+
+
+	/**
+	 *
+	 <resultMap id="resultMap" type="com.uniprint.template.service.UserVO">
+	 <id column="FcoId" property="coId" />
+	 <result column="FUSERID" property="id" />
+	 <result column="FNAME" property="name" />
+	 <result column="fnumber" property="number" />
+	 <result column="fmobile" property="mobile" />
+	 <result column="faddress" property="address" />
+	 <result column="femployeeId" property="employeeId" />
+	 <result column="fisAdmin" property="isAdmin" />
+	 <result column="fisSuperAdmin" property="isSuperAdmin" />
+	 <result column="fsex" property="sex" />
+	 <result column="fcreateTime" property="createTime" />
+	 <result column="fmodifytime" property="modifytime" />
+	 <result column="fisDelete" property="isDelete" />
+	 <result column="fremark" property="remark" />
+	 </resultMap>
+	 *
+	 * @param voName
+	 * @param daoName
+	 * @return
+	 */
+	private String getResultMap(String tableName, String voName, String daoName) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("<resultMap id=\"resultMap\" type=\"");
+		sb.append(voName);
+		sb.append("\">");
+		sb.append("\n\t");
+		sb.append("<id column=\"");
+		if(hasPk) {
+			//主键名称不一定是fid
+			sb.append(this.pkColName).append("\" property=\"id\" />");
+		}else {
+			sb.append("<id column=\"id\" property=\"id\" />");
+		}
+
+		PsiField[] fields = psiClass.getAllFields();
+		PsiAnnotation psiAnnotation = null;
+
+		String columnName = "";
+		for (PsiField field : fields) {
+			psiAnnotation = field.getAnnotation("www.autogeneratecode.model.Column");
+			if(psiAnnotation == null) {
+				continue;
+			}
+
+			columnName = getAnnotateText(psiAnnotation, "name", "");
+
+			if (field.getName().equalsIgnoreCase("id")) {
+				continue;
+			}
+
+			if(columnName == null || columnName.trim().length() ==0) {
+				continue;
+			}
+			sb.append("\n\t");
+//			<result column="FUSERID" property="id" />
+			sb.append("<result column=\"").append(columnName);
+			sb.append("\"");
+			sb.append(" property=\"").append(field.getName());
+			sb.append("\" />");
+		}
+
+
+		sb.append("\n");
+		sb.append("</resultMap>");
 		return sb.toString();
 	}
 
@@ -159,8 +236,13 @@ public class SqlMappingGenerator {
 		sb.append(getUpdateFields());
 		sb.append(")");
 		sb.append("\n\t\t");
-		sb.append("WHERE Fid = #{id}");
-		sb.append("");
+//		sb.append("WHERE Fid = #{id}");
+		if(hasPk) {
+			//主键名称不一定是fid
+			sb.append("WHERE ").append(this.pkColName).append(" = #{id} ");
+		}else {
+			sb.append("WHERE Fid = #{id}");
+		}
 
 		sb.append("\n\t</update>");
 		return sb.toString();
@@ -187,8 +269,13 @@ public class SqlMappingGenerator {
 		sb.append("DELETE FROM ");
 		sb.append(tableName);
 		sb.append("\n\t\t");
-		sb.append("WHERE Fid = #{id}");
-		sb.append("");
+//		sb.append("WHERE Fid = #{id}");
+		if(hasPk) {
+			//主键名称不一定是fid
+			sb.append("WHERE ").append(this.pkColName).append(" = #{id} ");
+		}else {
+			sb.append("WHERE Fid = #{id}");
+		}
 
 		sb.append("\n\t</delete>");
 		return sb.toString();
@@ -225,7 +312,13 @@ public class SqlMappingGenerator {
 		sb.append("FROM ");
 		sb.append(tableName);
 		sb.append("\n\t\t");
-		sb.append("WHERE Fid = #{id}");
+//		sb.append("WHERE Fid = #{id}");
+		if(hasPk) {
+			//主键名称不一定是fid
+			sb.append("WHERE ").append(this.pkColName).append(" = #{id} ");
+		}else {
+			sb.append("WHERE Fid = #{id}");
+		}
 
 		//sb.append(getTestFields());
 
@@ -266,7 +359,13 @@ public class SqlMappingGenerator {
 		sb.append("FROM ");
 		sb.append(tableName);
 		sb.append("\n\t\t");
-		sb.append("WHERE Fid in");
+//		sb.append("WHERE Fid in");
+		if(hasPk) {
+			//主键名称不一定是fid
+			sb.append("WHERE ").append(this.pkColName).append(" in");
+		}else {
+			sb.append("WHERE Fid in");
+		}
 		sb.append("\n\t\t\t");
 		sb.append("<foreach collection=\"idSet\" item=\"id\" index=\"index\" open=\"(\" close=\")\" separator=\",\">");
 		sb.append("\n\t\t\t\t");
@@ -390,7 +489,7 @@ public class SqlMappingGenerator {
 //			sb.append(column.name());
 			sb.append(columnName);
 
-			sb.append("= #{");
+			sb.append(" = #{");
 			sb.append(field.getName());
 			sb.append("}");
 			
@@ -515,6 +614,39 @@ public class SqlMappingGenerator {
 			String s = psiAnnotation.findAttributeValue(text).getContext().getLastChild().getText();
 			s = s.replaceAll("\"", "");
 			return addBeforeStr + s;
+		}
+		return "";
+	}
+
+	private void genPkColName()  {
+
+		PsiField[] psiAllFields = psiClass.getAllFields();
+		PsiAnnotation psiAnnotation = null;
+
+		String fieldName = "";
+		String colName = "";
+
+		for (PsiField psiField : psiAllFields) {
+			fieldName = psiField.getName();
+			psiAnnotation = psiField.getAnnotation("www.autogeneratecode.model.Column");
+			colName = getAnnotateText(psiAnnotation, "name");
+
+			if ("id".equalsIgnoreCase(fieldName)) {
+				this.hasPk = true;
+				this.pkColName = colName;
+				break;
+			}
+
+		}
+	}
+	protected String getAnnotateText(PsiAnnotation psiAnnotation, String text) {
+		if (psiAnnotation == null) {
+			return "";
+		}
+		if (psiAnnotation.findAttributeValue(text) != null) {
+			String s = psiAnnotation.findAttributeValue(text).getContext().getLastChild().getText();
+			s = s.replaceAll("\"", "");
+			return s;
 		}
 		return "";
 	}

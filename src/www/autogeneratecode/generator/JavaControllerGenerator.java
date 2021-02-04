@@ -41,8 +41,11 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		String voName = sourceName +"VO";
 		String varVoName = varSourceName +"VO"; 
 		String servoceName = sourceName +"Service";
-		String varServiceName = varSourceName +"Service"; 
-		
+		//service接口类名称
+		String varServiceClassName = "I"+psiClass.getName() +"Service";
+		//service接口实列名称
+		String varServiceName = "i"+psiClass.getName() +"Service";
+
 		// 包名
 		sb.append("package ");
 		sb.append(packageName);
@@ -87,7 +90,7 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		}else {
 			sb.append(".service.");
 		}
-		sb.append(sourceName).append("Service").append(";\n");
+		sb.append(varServiceClassName).append(";\n");
 				
 		
 //		Comment comment = javaClass.getAnnotation(Comment.class);
@@ -111,7 +114,7 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		sb.append("\n");
 		sb.append("\t@Resource\n");
 		sb.append("\tprivate ");
-		sb.append(servoceName).append(" ").append(varServiceName).append(";");
+		sb.append(varServiceClassName).append(" ").append(varServiceName).append(";");
 		
 		sb.append("\n");
 		

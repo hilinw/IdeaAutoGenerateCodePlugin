@@ -186,7 +186,7 @@ public class MetadataDialogUI extends JDialog {
         sb.append("    public String number;\n");
         sb.append("\n");
 
-        sb.append("    @Comment(content=\"状态：0 在职，1离职，\")\n");
+        sb.append("    @Comment(content=\"状态: 0 在职,1离职,\")\n");
         sb.append("    @Column(name=\"Fstatus\", dataType=\"int\" , precision=1)\n");
         sb.append("    public int status;\n");
         sb.append("\n");
