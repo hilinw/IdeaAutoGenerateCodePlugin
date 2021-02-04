@@ -30,8 +30,10 @@ public class ProjectConfig {
     private boolean projectCompile = true;
     private boolean projectTest = false;
 
-    private boolean isSameDir = false;
+    private boolean isSameDir = true;
     private boolean addTransactional = true;
+    private boolean isNoInterface = true;
+
     protected List<PsiJavaFileImpl> psiFiles = null;
     protected List<String> imports = new ArrayList<String>();
     private String extClass;
@@ -208,6 +210,14 @@ public class ProjectConfig {
 
     public void setAddTransactional(boolean addTransactional) {
         this.addTransactional = addTransactional;
+    }
+
+    public boolean isNoInterface() {
+        return isNoInterface;
+    }
+
+    public void setNoInterface(boolean isNoInterface) {
+        this.isNoInterface = isNoInterface;
     }
 
     public List<String> getImports() {

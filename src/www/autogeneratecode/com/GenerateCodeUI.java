@@ -29,6 +29,7 @@ public class GenerateCodeUI extends JDialog {
     private JLabel errMsgLable;
     private JCheckBox checkTransactional;
     private JCheckBox checkSameDir;
+    private JCheckBox checkboxNoInterface;
     protected ProjectConfig config = null;
 
 
@@ -102,6 +103,7 @@ public class GenerateCodeUI extends JDialog {
         config.setGenerateIbatisSql(checkBoxIbatis.isSelected());
         config.setSameDir(checkSameDir.isSelected());
         config.setAddTransactional(checkTransactional.isSelected());
+        config.setNoInterface(checkboxNoInterface.isSelected());
 
         try {
             generator.setConfig(config);
