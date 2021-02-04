@@ -86,7 +86,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append(getAnnotate(psiAnnotation,"","Service of "));
 
 		sb.append("\n");
-		sb.append("public interface ").append(psiClass.getName()).append("Service").append(" {");
+		sb.append("public interface ").append("I").append(psiClass.getName()).append("Service").append(" {");
 		sb.append("\n");
 		sb.append(getAddMethod(voName, varVoName, varDaoName, false));
 		sb.append("\n");
@@ -185,11 +185,11 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 
 		sb.append("\n");
 		sb.append("@Service(\"");
-		sb.append(varSourceName).append("\")");
+		sb.append(varSourceName).append("Service\")");
 		sb.append("\n");
 
 		sb.append("public class ").append(psiClass.getName()).append("ServiceImpl ");
-		sb.append("implements ").append(sourceName).append("Service");
+		sb.append("implements ").append("I").append(sourceName).append("Service");
 		sb.append("{");
 		sb.append("\n");
 

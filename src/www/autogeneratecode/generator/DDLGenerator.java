@@ -93,6 +93,8 @@ public class DDLGenerator {
         StringBuilder sb = new StringBuilder();
         PsiField[] psiAllFields = psiClass.getAllFields();
         PsiAnnotation psiAnnotation = null;
+        PsiAnnotation psiComment = null;
+        String content = "";
 
         String fieldName = "";
         String colName = "";
@@ -104,6 +106,9 @@ public class DDLGenerator {
 
         for (PsiField psiField : psiAllFields) {
             fieldName = psiField.getName();
+            psiComment = psiField.getAnnotation("www.autogeneratecode.model.Comment");
+            content = getAnnotateText(psiComment, "content");
+
             psiAnnotation = psiField.getAnnotation("www.autogeneratecode.model.Column");
             colName = getAnnotateText(psiAnnotation, "name");
             dataType = getAnnotateText(psiAnnotation, "dataType");
@@ -117,7 +122,7 @@ public class DDLGenerator {
             if (StringUtils.isBlank(dataType)) {
                 throw new CodeGenException("属性[" + fieldName + "]的数据库表字段类型(dataType)不能为空");
             }
-
+            nullable = true;
             nullable = getAnnotateBoolean(psiAnnotation, "nullable", fieldName);
 
             if ("id".equalsIgnoreCase(fieldName)) {
@@ -136,14 +141,20 @@ public class DDLGenerator {
                 if (length > 0) {
                     sb.append("(").append(length).append(") ");
                 }
+                if (!nullable) {
+                    sb.append(" NOT NULL");
+                }
+            }  else if("int".equalsIgnoreCase(dataType) || "decimal".equalsIgnoreCase(dataType)){
+                sb.append(" default 0");
             } else {
+                if (!nullable) {
+                    sb.append(" NOT NULL");
+                }
+            }
+            if (content != null) {
+                sb.append(" COMMENT '" + content +"'");
 
             }
-
-            if (!nullable) {
-                sb.append("NOT NULL");
-            }
-
         }
 
         return sb.toString();

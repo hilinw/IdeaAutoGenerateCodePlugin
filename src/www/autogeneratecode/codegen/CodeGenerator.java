@@ -283,19 +283,34 @@ public class CodeGenerator {
     }
 
     /**
-     * 生成sql文件的路径。 在原来的路径里面去掉metadata
+     * 生成sql文件的路径。
+     * 如果是maven结构，生成在 src/main/resources目录下
      */
     private File getSqlFileDir(PsiJavaFileImpl psiJavaFileImpl,String childDir) {
 
 //		String filePath = psiJavaFileImpl.getVirtualFile().getParent().getPath();
         String filePath = psiJavaFileImpl.getVirtualFile().getParent().getPath();
-        int p = filePath.indexOf("metadata");
+        //生成在 src/main/resources目录下
+        int p = filePath.indexOf("src/main");
         String newPath = "";
         if (p > 0) {
-            newPath = filePath.substring(0, p);
-            newPath = newPath + filePath.substring(p + 9);
-        }
+            newPath = filePath.substring(0, p+8);
+            newPath = newPath + File.separator+"resources";
+        }else {
+            p = filePath.indexOf("src");
+            if (p > 0) {
+                newPath = filePath.substring(0, p+3);
+                newPath = newPath +File.separator+"main"+ File.separator+"resources";
+            }else {
+                //在原来的路径里面去掉metadata
+                p = filePath.indexOf("metadata");
+                if (p > 0) {
+                    newPath = filePath.substring(0, p);
+                    newPath = newPath + filePath.substring(p + 9);
+                }
 
+            }
+        }
         if (childDir != null && childDir.trim().length() > 0) {
             newPath = newPath + File.separator + childDir;
         }

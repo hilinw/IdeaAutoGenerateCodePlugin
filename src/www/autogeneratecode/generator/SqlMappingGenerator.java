@@ -197,7 +197,7 @@ public class SqlMappingGenerator {
 	
 	
 	/**
-	 * <select id="queryListById" parameterType="java.long.String"
+	 * <select id="queryListById" parameterType="java.lang.String"
 	 * resultType="xxx.vo.XxxxxVo" SELECT column1,column2.... 
 	 * FROM tableName LIMIT
 	 * Where Fid = #{id}
@@ -211,7 +211,7 @@ public class SqlMappingGenerator {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("\t<select id=\"queryById\" ");
-		sb.append("parameterType=\"java.long.String\" ");
+		sb.append("parameterType=\"java.lang.String\" ");
 		// sb.append(voName);
 		// sp.append("\" ");
 		sb.append("resultType=\"");
