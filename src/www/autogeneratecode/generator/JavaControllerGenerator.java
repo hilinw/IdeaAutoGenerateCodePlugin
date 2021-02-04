@@ -41,10 +41,19 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		String voName = sourceName +"VO";
 		String varVoName = varSourceName +"VO"; 
 //		String servoceName = sourceName +"Service";
+
 		//service接口类名称
-		String varServiceClassName = "I"+psiClass.getName() +"Service";
+		String varServiceClassName = "";
 		//service接口实列名称
-		String varServiceName = "i"+psiClass.getName() +"Service";
+		String varServiceName = "";
+
+		if(this.isNoInterface()) {
+			varServiceClassName = psiClass.getName() +"Service";
+			varServiceName = varSourceName +"Service";
+		}else {
+			varServiceClassName = "I"+psiClass.getName() +"Service";
+			varServiceName = "i"+psiClass.getName() +"Service";
+		}
 
 		// 包名
 		sb.append("package ");

@@ -15,6 +15,7 @@ public abstract class JavaFileGenerator {
     protected String packageName = "";
     private boolean isSameDir = false;
     private boolean addTransactional = true;
+    private boolean isNoInterface = true;
 
     // 源文件的导入部分
     protected List<String> sourceFileImports = new ArrayList<String>();
@@ -146,6 +147,14 @@ public abstract class JavaFileGenerator {
 
     public void setExtClass(String extClass) {
         this.extClass = extClass;
+    }
+
+    public boolean isNoInterface() {
+        return isNoInterface;
+    }
+
+    public void setNoInterface(boolean noInterface) {
+        isNoInterface = noInterface;
     }
 
     protected String generateImports() {

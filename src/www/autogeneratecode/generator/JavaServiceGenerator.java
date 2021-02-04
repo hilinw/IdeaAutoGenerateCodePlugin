@@ -37,7 +37,14 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 
 		dir.mkdirs();
 
-		File file = new File(dir, psiClass.getName() + "ServiceImpl" + ".java");
+		String fileName = "";
+		if(this.isNoInterface()) {
+			fileName = psiClass.getName() + "Service" + ".java";
+		}else {
+			fileName = psiClass.getName() + "ServiceImpl" + ".java";
+		}
+		File file = new File(dir, fileName);
+
 		file = IOUtils.write(file, getImplSource());
 		System.out.println("Generate JavaFile source path:" + file.getPath());
 		return file;
@@ -124,7 +131,11 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		if (isSameDir()) {
 			sb.append(";");
 		} else {
-			sb.append(".service.impl;");
+			if(isNoInterface()) {
+				sb.append(".service;");
+			}else {
+				sb.append(".service.impl;");
+			}
 		}
 		sb.append("\n\n");
 
@@ -155,10 +166,12 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 			sb.append(packageName);
 			sb.append(".dao.");
 			sb.append(sourceName).append("Dao").append(";\n");
-			sb.append("import ");
-			sb.append(packageName);
-			sb.append(".service.");
-			sb.append("I").append(sourceName).append("Service").append(";\n");
+			if(!this.isNoInterface()) {
+				sb.append("import ");
+				sb.append(packageName);
+				sb.append(".service.");
+				sb.append("I").append(sourceName).append("Service").append(";\n");
+			}
 		}
 
 //		Comment comment = javaClass.getAnnotation(Comment.class);
@@ -171,8 +184,14 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append(varSourceName).append("Service\")");
 		sb.append("\n");
 
-		sb.append("public class ").append(psiClass.getName()).append("ServiceImpl ");
-		sb.append("implements ").append("I").append(sourceName).append("Service");
+		sb.append("public class ").append(psiClass.getName());
+
+		if(this.isNoInterface()) {
+			sb.append("Service ");
+		}else {
+			sb.append("ServiceImpl ");
+			sb.append("implements ").append("I").append(sourceName).append("Service");
+		}
 		sb.append("{");
 		sb.append("\n");
 
@@ -221,10 +240,10 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 	private String getAddMethod(String voName, String varName, String varDaoName, boolean isImpl) {
 
 		StringBuilder sb = new StringBuilder();
-		if (isImpl) {
-			sb.append("\n\t");
-			sb.append("@Override");
-		}
+//		if (isImpl) {
+//			sb.append("\n\t");
+//			sb.append("@Override");
+//		}
 		sb.append("\n\t");
 
 		if (isImpl && isAddTransactional()) {
@@ -267,10 +286,10 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 	private String getUpdateMethod(String voName, String varName, String varDaoName, boolean isImpl) {
 
 		StringBuilder sb = new StringBuilder();
-		if (isImpl) {
-			sb.append("\n\t");
-			sb.append("@Override");
-		}
+//		if (isImpl) {
+//			sb.append("\n\t");
+//			sb.append("@Override");
+//		}
 		sb.append("\n\t");
 		if (isImpl && isAddTransactional()) {
 			sb.append("@Transactional(readOnly=false, propagation=Propagation.REQUIRED)");
@@ -329,10 +348,10 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 	private String getDeleteById(String voName, String varName, String varDaoName, boolean isImpl) {
 
 		StringBuilder sb = new StringBuilder();
-		if (isImpl) {
-			sb.append("\n\t");
-			sb.append("@Override");
-		}
+//		if (isImpl) {
+//			sb.append("\n\t");
+//			sb.append("@Override");
+//		}
 		sb.append("\n\t");
 		if (isImpl && isAddTransactional()) {
 			sb.append("@Transactional(readOnly=false, propagation=Propagation.REQUIRED)");
@@ -365,10 +384,10 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 
 	private String getQueryById(String voName, String varName, String varDaoName, boolean isImpl) {
 		StringBuilder sb = new StringBuilder();
-		if (isImpl) {
-			sb.append("\n\t");
-			sb.append("@Override");
-		}
+//		if (isImpl) {
+//			sb.append("\n\t");
+//			sb.append("@Override");
+//		}
 		sb.append("\n\t");
 		sb.append("public ").append(voName);
 		sb.append(" queryById(");
@@ -393,10 +412,10 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 
 	private String getQueryListByIds(String voName, String varName, String varDaoName, boolean isImpl) {
 		StringBuilder sb = new StringBuilder();
-		if (isImpl) {
-			sb.append("\n\t");
-			sb.append("@Override");
-		}
+//		if (isImpl) {
+//			sb.append("\n\t");
+//			sb.append("@Override");
+//		}
 		sb.append("\n\t");
 		sb.append("public List<").append(voName);
 		sb.append("> queryListByIds(");
@@ -422,10 +441,10 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 	private String getQueryListMethod(String voName, String varName, String varDaoName, boolean isImpl) {
 
 		StringBuilder sb = new StringBuilder();
-		if (isImpl) {
-			sb.append("\n\t");
-			sb.append("@Override");
-		}
+//		if (isImpl) {
+//			sb.append("\n\t");
+//			sb.append("@Override");
+//		}
 		sb.append("\n\t");
 		sb.append("public List<").append(voName);
 		sb.append("> queryList(");
@@ -458,10 +477,10 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 	private String getQueryListCountMethod(String voName, String varName, String varDaoName, boolean isImpl) {
 
 		StringBuilder sb = new StringBuilder();
-		if (isImpl) {
-			sb.append("\n\t");
-			sb.append("@Override");
-		}
+//		if (isImpl) {
+//			sb.append("\n\t");
+//			sb.append("@Override");
+//		}
 		sb.append("\n\t");
 		sb.append("public int queryListCount(");
 //		sb.append(voName);

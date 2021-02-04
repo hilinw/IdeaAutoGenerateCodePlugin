@@ -143,6 +143,8 @@ public class CodeGenerator {
 
         JavaControllerGenerator generator = new JavaControllerGenerator(psiJavaFileImpl, packageName);
         generator.setSameDir(config.isSameDir());
+        generator.setAddTransactional(config.isAddTransactional());//是否增加 事务标注
+        generator.setNoInterface(config.isNoInterface());
         generator.generate();
         files[i] = generator.write(this.config.getWorkSpace());
 
@@ -168,21 +170,33 @@ public class CodeGenerator {
 
         JavaServiceGenerator generator = new JavaServiceGenerator(psiJavaFileImpl, packageName);
         generator.setSameDir(config.isSameDir());
+        generator.setAddTransactional(config.isAddTransactional());//是否增加 事务标注
+        generator.setNoInterface(config.isNoInterface());
+
         generator.generate();
-        files[i] = generator.write(this.config.getWorkSpace());
+
+        if(!this.config.isNoInterface()) {
+            //接口类
+            files[i] = generator.write(this.config.getWorkSpace());
 
 
-        if (this.getProjectDir() != null) {
-            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,"service")));
+            if (this.getProjectDir() != null) {
+                this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl, "service")));
+            }
+
+            System.out.println("generate: '" + files[i].getName() + "'  ok.");
         }
-
-        System.out.println("generate: '" + files[i].getName() + "'  ok.");
-
         // 写实现类
         files[i]  = generator.writeImpl(this.config.getWorkSpace());
 
         if (this.getProjectDir() != null) {
-            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,"service" + File.separator + "impl")));
+            String filepath = "";
+            if(this.config.isNoInterface()) {
+                filepath = "service";
+            }else {
+                filepath = "service" + File.separator + "impl";
+            }
+            this.fileTasks.add(new CopyTask(files[i], this.getJavaFileDir(psiJavaFileImpl,filepath)));
         }
 
         System.out.println("generate: '" + files[i].getName() + "'  ok.");
