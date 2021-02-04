@@ -791,7 +791,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append("\n\t");
 		sb.append("public void validateFieldStringLength(String field, String value,int length) throws Exception {");
 		sb.append("\n\t\t");
-		sb.append("if(value.length() > length ) {");
+		sb.append("if(value != null && value.length() > length ) {");
 		sb.append("\n\t\t\t");
 		sb.append("throw new RuntimeException(\"validate error: field '\"+field+\"' length is big than\"+ length);");
 		sb.append("\n\t\t");

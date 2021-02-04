@@ -40,7 +40,7 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		String varSourceName = sourceName.substring(0,1).toLowerCase()+sourceName.substring(1); 
 		String voName = sourceName +"VO";
 		String varVoName = varSourceName +"VO"; 
-		String servoceName = sourceName +"Service";
+//		String servoceName = sourceName +"Service";
 		//service接口类名称
 		String varServiceClassName = "I"+psiClass.getName() +"Service";
 		//service接口实列名称

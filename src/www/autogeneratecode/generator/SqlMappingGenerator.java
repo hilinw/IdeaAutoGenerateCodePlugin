@@ -234,7 +234,6 @@ public class SqlMappingGenerator {
 		sb.append("\n\t\t");
 		sb.append("SET ");
 		sb.append(getUpdateFields());
-		sb.append(")");
 		sb.append("\n\t\t");
 //		sb.append("WHERE Fid = #{id}");
 		if(hasPk) {
