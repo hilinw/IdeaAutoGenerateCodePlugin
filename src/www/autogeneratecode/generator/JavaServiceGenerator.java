@@ -70,15 +70,12 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append("\n");
 		// sb.append(this.generateImports());
 
-		sb.append("import ");
-		sb.append(packageName);
-
-		if (isSameDir()) {
-			sb.append(".");
-		} else {
+		if (!isSameDir()) {
+			sb.append("import ");
+			sb.append(packageName);
 			sb.append(".vo.");
+			sb.append(voName).append(";\n");
 		}
-		sb.append(voName).append(";\n");
 
 //		Comment comment = javaClass.getAnnotation(Comment.class);
 //		sb.append(getCommentContent(comment, "", "Service of "));
@@ -149,34 +146,20 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		}
 
 		// sb.append(this.generateImports());
-		sb.append("import ");
-//		sb.append(packageName).append(".vo.").append(voName).append(";\n");
-		sb.append(packageName);
-		if (isSameDir()) {
-			sb.append(".");
-		} else {
+		if (!isSameDir()) {
+			sb.append("import ");
+			sb.append(packageName);
 			sb.append(".vo.");
-		}
-		sb.append(voName).append(";\n");
-
-		sb.append("import ");
-//		sb.append(packageName).append(".dao.").append(sourceName).append("Dao").append(";\n");
-		sb.append(packageName);
-		if (isSameDir()) {
-			sb.append(".");
-		} else {
+			sb.append(voName).append(";\n");
+			sb.append("import ");
+			sb.append(packageName);
 			sb.append(".dao.");
-		}
-		sb.append(sourceName).append("Dao").append(";\n");
-		sb.append("import ");
-//		sb.append(packageName).append(".service.").append(sourceName).append("Service").append(";\n");
-		sb.append(packageName);
-		if (isSameDir()) {
-			sb.append(".");
-		} else {
+			sb.append(sourceName).append("Dao").append(";\n");
+			sb.append("import ");
+			sb.append(packageName);
 			sb.append(".service.");
+			sb.append("I").append(sourceName).append("Service").append(";\n");
 		}
-		sb.append("I").append(sourceName).append("Service").append(";\n");
 
 //		Comment comment = javaClass.getAnnotation(Comment.class);
 //		sb.append(getCommentContent(comment, "", "ServiceImpl of "));
@@ -359,7 +342,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 //		sb.append(voName);
 //		sb.append(" ");
 //		sb.append(varName);
-		sb.append("String id");
+		sb.append("long id");
 		sb.append(") throws Exception");
 		if (isImpl) {
 			sb.append("{");
@@ -389,7 +372,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append("\n\t");
 		sb.append("public ").append(voName);
 		sb.append(" queryById(");
-		sb.append("String id");
+		sb.append("long id");
 		sb.append(") throws Exception");
 		if (isImpl) {
 			sb.append("{");

@@ -57,40 +57,33 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		sb.append("\n\n");
 
 		// 导入import
-		sb.append("import java.util.HashMap;\n");
+//		sb.append("import java.util.HashMap;\n");
 		sb.append("import java.util.List;\n");
 		sb.append("import java.util.Map;\n");
 		
 		sb.append("\n");
 		sb.append("import javax.annotation.Resource;\n");
 //		sb.append("import javax.servlet.ServletException;\n");
-		sb.append("import javax.servlet.http.HttpServletRequest;\n");
-		sb.append("import javax.servlet.http.HttpServletResponse;\n");
+//		sb.append("import javax.servlet.http.HttpServletRequest;\n");
+//		sb.append("import javax.servlet.http.HttpServletResponse;\n");
 		sb.append("\n");
 		sb.append("import org.springframework.stereotype.Controller;\n");
-//		sb.append("import org.springframework.web.bind.annotation.RequestBody;\n");
+		sb.append("import org.springframework.web.bind.annotation.RequestBody;\n");
 		sb.append("import org.springframework.web.bind.annotation.RequestMapping;\n");
-//		sb.append("import org.springframework.web.bind.annotation.ResponseBody;\n");
+		sb.append("import org.springframework.web.bind.annotation.ResponseBody;\n");
 		
 		//sb.append(this.generateImports());
-		sb.append("\n");
-		sb.append("import ");
-		sb.append(packageName);
-		if(isSameDir()) {
-			sb.append(".");
-		}else {
+		if(!isSameDir()) {
+			sb.append("\n");
+			sb.append("import ");
+			sb.append(packageName);
 			sb.append(".vo.");
-		}
-		
-		sb.append(voName).append(";\n");
-		sb.append("import ");
-		sb.append(packageName);
-		if(isSameDir()) {
-			sb.append(".");
-		}else {
+			sb.append(voName).append(";\n");
+			sb.append("import ");
+			sb.append(packageName);
 			sb.append(".service.");
+			sb.append(varServiceClassName).append(";\n");
 		}
-		sb.append(varServiceClassName).append(";\n");
 				
 		
 //		Comment comment = javaClass.getAnnotation(Comment.class);
@@ -125,8 +118,8 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		sb.append(getDeleteById(voName, varVoName,varServiceName, true));
 		sb.append("\n");
 		sb.append(getQueryById(voName, varVoName,varServiceName, true));
-		sb.append("\n");
-		sb.append(getQueryListByIds(voName, varVoName,varServiceName, true));
+//		sb.append("\n");
+//		sb.append(getQueryListByIds(voName, varVoName,varServiceName, true));
 		sb.append("\n");
 		sb.append(getQueryListMethod(voName, varVoName,varServiceName, true));
 		sb.append("\n");
@@ -149,28 +142,32 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/add\",produces=\"text/html;charset=UTF-8\")");
+			//sb.append("@RequestMapping(value=\"/add\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/add\")");
+			sb.append("\n\t");
+			sb.append("@ResponseBody");
 		}
 		sb.append("\n\t");
-		sb.append("public void add(HttpServletRequest request, HttpServletResponse response, ");
+		//sb.append("public void add(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("public void add(@RequestBody ");
 		sb.append(voName);
 		sb.append(" ");
 		sb.append(varName);
-		sb.append(")");
+		sb.append(") throws Exception");
 		if(isImpl) {
 			sb.append("{");
 			sb.append("\n\t\t");
-			sb.append("try {");
-			sb.append("\n\t\t\t");
+//			sb.append("try {");
+//			sb.append("\n\t\t\t");
 			sb.append(varServiceName);
 			sb.append(".add(");
 			sb.append(varName);
 			sb.append(");");
-			sb.append("\n\t\t");
-			sb.append("} catch (Exception e) {");
-			sb.append("\n\t\t\t");
-			sb.append("e.printStackTrace();");
-			sb.append("\n\t\t}");
+//			sb.append("\n\t\t");
+//			sb.append("} catch (Exception e) {");
+//			sb.append("\n\t\t\t");
+//			sb.append("e.printStackTrace();");
+//			sb.append("\n\t\t}");
 			sb.append("\n\t}");
 		}else {
 			
@@ -186,28 +183,32 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/update\",produces=\"text/html;charset=UTF-8\")");
+			//sb.append("@RequestMapping(value=\"/update\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/update\")");
+			sb.append("\n\t");
+			sb.append("@ResponseBody");
 		}
 		sb.append("\n\t");
-		sb.append("public void update(HttpServletRequest request, HttpServletResponse response, ");
+		//sb.append("public void update(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("public void update(@RequestBody ");
 		sb.append(voName);
 		sb.append(" ");
 		sb.append(varName);
-		sb.append(")");
+		sb.append(") throws Exception");
 		if(isImpl) {
 			sb.append("{");
 			sb.append("\n\t\t");
-			sb.append("try {");
-			sb.append("\n\t\t\t");
+//			sb.append("try {");
+//			sb.append("\n\t\t\t");
 			sb.append(varServiceName);
 			sb.append(".update(");
 			sb.append(varName);
 			sb.append(");");
-			sb.append("\n\t\t");
-			sb.append("} catch (Exception e) {");
-			sb.append("\n\t\t\t");
-			sb.append("e.printStackTrace();");
-			sb.append("\n\t\t}");
+//			sb.append("\n\t\t");
+//			sb.append("} catch (Exception e) {");
+//			sb.append("\n\t\t\t");
+//			sb.append("e.printStackTrace();");
+//			sb.append("\n\t\t}");
 			sb.append("\n\t}");
 		}else {
 			
@@ -224,30 +225,34 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/deleteById\",produces=\"text/html;charset=UTF-8\")");
+			//sb.append("@RequestMapping(value=\"/deleteById\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/deleteById\")");
+			sb.append("\n\t");
+			sb.append("@ResponseBody");
 		}
 		sb.append("\n\t");
-		sb.append("public void deleteById(HttpServletRequest request, HttpServletResponse response, ");
-//		sb.append(voName);
-//		sb.append(" ");
-//		sb.append(varName);
-		sb.append("String id");
-		sb.append(")");
+		//sb.append("public void deleteById(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("public void deleteById(@RequestBody ");
+		sb.append(voName);
+		sb.append(" ");
+		sb.append(varName);
+//		sb.append("String id");
+		sb.append(") throws Exception");
 		if(isImpl) {
 			sb.append("{");
 			sb.append("\n\t\t");
-			sb.append("try {");
-			sb.append("\n\t\t\t");
+//			sb.append("try {");
+//			sb.append("\n\t\t\t");
 			sb.append(varServiceName);
 			sb.append(".deleteById(");
-//			sb.append(varName);
-			sb.append("id");
+			sb.append(varName).append(".getId()");
+//			sb.append("id");
 			sb.append(");");
-			sb.append("\n\t\t");
-			sb.append("} catch (Exception e) {");
-			sb.append("\n\t\t\t");
-			sb.append("e.printStackTrace();");
-			sb.append("\n\t\t}");
+//			sb.append("\n\t\t");
+//			sb.append("} catch (Exception e) {");
+//			sb.append("\n\t\t\t");
+//			sb.append("e.printStackTrace();");
+//			sb.append("\n\t\t}");
 			sb.append("\n\t}");
 		}else {
 			
@@ -265,14 +270,21 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/queryById\",produces=\"text/html;charset=UTF-8\")");
+			//sb.append("@RequestMapping(value=\"/queryById\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/queryById\")");
+			sb.append("\n\t");
+			sb.append("@ResponseBody");
 		}
 		sb.append("\n\t");
 		sb.append("public ").append(voName);
 		sb.append(" ");
-		sb.append("queryById(HttpServletRequest request, HttpServletResponse response, ");
-		sb.append("String id");
-		sb.append(")");
+		//sb.append("queryById(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("queryById(@RequestBody ");
+		sb.append(voName);
+		sb.append(" ");
+		sb.append(varName);
+		//sb.append("String id");
+		sb.append(") throws Exception");
 		
 		if(isImpl) {
 			sb.append("{");
@@ -287,21 +299,22 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 //			sb.append(");");
 			
 			sb.append("\n\t\t");
-			sb.append("try {");
-			sb.append("\n\t\t\t");
+//			sb.append("try {");
+//			sb.append("\n\t\t\t");
 			sb.append(varName).append(" = ");
 			sb.append(varServiceName);
 			
 			sb.append(".queryById(");
-			sb.append("id");
+			sb.append(varName).append(".getId()");
+			//sb.append("id");
 			sb.append(");");
 			
 			
-			sb.append("\n\t\t");
-			sb.append("} catch (Exception e) {");
-			sb.append("\n\t\t\t");
-			sb.append("e.printStackTrace();");
-			sb.append("\n\t\t}");
+//			sb.append("\n\t\t");
+//			sb.append("} catch (Exception e) {");
+//			sb.append("\n\t\t\t");
+//			sb.append("e.printStackTrace();");
+//			sb.append("\n\t\t}");
 			sb.append("\n\t\t");
 			sb.append("return ");
 			sb.append(varName).append(";");
@@ -320,14 +333,18 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/queryListByIdss\",produces=\"text/html;charset=UTF-8\")");
+			//sb.append("@RequestMapping(value=\"/queryListByIdss\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/queryListByIds\")");
+			sb.append("\n\t");
+			sb.append("@ResponseBody");
 		}
 		sb.append("\n\t");
 		sb.append("public List<").append(voName);
 		sb.append("> ");
-		sb.append("queryListByIds(HttpServletRequest request, HttpServletResponse response, ");
+		//sb.append("queryListByIds(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("queryListByIds(@RequestBody ");
 		sb.append("List<String> idSet");
-		sb.append(")");
+		sb.append(") throws Exception");
 		
 		if(isImpl) {
 			sb.append("{");
@@ -342,8 +359,8 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 //			sb.append(");");
 			
 			sb.append("\n\t\t");
-			sb.append("try {");
-			sb.append("\n\t\t\t");
+//			sb.append("try {");
+//			sb.append("\n\t\t\t");
 			sb.append(varName).append("s = ");
 			sb.append(varServiceName);
 			
@@ -352,11 +369,11 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 			sb.append(");");
 			
 			
-			sb.append("\n\t\t");
-			sb.append("} catch (Exception e) {");
-			sb.append("\n\t\t\t");
-			sb.append("e.printStackTrace();");
-			sb.append("\n\t\t}");
+//			sb.append("\n\t\t");
+//			sb.append("} catch (Exception e) {");
+//			sb.append("\n\t\t\t");
+//			sb.append("e.printStackTrace();");
+//			sb.append("\n\t\t}");
 			sb.append("\n\t\t");
 			sb.append("return ");
 			sb.append(varName).append("s;");
@@ -375,42 +392,59 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/queryList\",produces=\"text/html;charset=UTF-8\")");
+			//sb.append("@RequestMapping(value=\"/queryList\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/queryList\")");
+			sb.append("\n\t");
+			sb.append("@ResponseBody");
 		}
 		sb.append("\n\t");
 		sb.append("public List<").append(voName);
 		sb.append("> ");
-		sb.append("queryList(HttpServletRequest request, HttpServletResponse response, ");
-		sb.append(voName);
-		sb.append(" ");
-		sb.append(varName);
-		sb.append(")");
+		//sb.append("queryList(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("queryList(@RequestBody Map<String, Object> params");
+
+		sb.append(") throws Exception");
 		if(isImpl) {
 			sb.append("{");
 			sb.append("\n\t\t");
 			sb.append("List<").append(voName).append("> ");
 			sb.append(varName).append("s = null;");
 			sb.append("\n\t\t");
-			sb.append("Map<String, Object> parameterObject = new HashMap<String, Object>();");
+			sb.append("int offset = 0;");
 			sb.append("\n\t\t");
-			sb.append("setParameterMap(parameterObject, ");
-			sb.append(varName);
-			sb.append(");");
-			
+			sb.append("int limit = Integer.MAX_VALUE;");
 			sb.append("\n\t\t");
-			sb.append("try {");
+			sb.append("Object soffset = params.get(\"offset\");");
+			sb.append("\n\t\t");
+			sb.append("Object slimit = params.get(\"limit\");");
+			sb.append("\n\n\t\t");
+			sb.append("if(soffset == null || soffset.toString().length() ==0 ) {");
 			sb.append("\n\t\t\t");
+			sb.append("params.put(\"offset\", offset);");
+			sb.append("\n\t\t");
+			sb.append("}");
+			sb.append("\n\t\t");
+			sb.append("if(slimit == null || slimit.toString().length() ==0 ) {");
+			sb.append("\n\t\t\t");
+			sb.append("params.put(\"limit\", limit);");
+			sb.append("\n\t\t");
+			sb.append("}");
+
+			
+			sb.append("\n\n\t\t");
+//			sb.append("try {");
+//			sb.append("\n\t\t\t");
 			sb.append(varName).append("s = ");
 			sb.append(varServiceName);
 			sb.append(".queryList(");
 //			sb.append(varName);
-			sb.append("parameterObject");
+			sb.append("params");
 			sb.append(");");
-			sb.append("\n\t\t");
-			sb.append("} catch (Exception e) {");
-			sb.append("\n\t\t\t");
-			sb.append("e.printStackTrace();");
-			sb.append("\n\t\t}");
+//			sb.append("\n\t\t");
+//			sb.append("} catch (Exception e) {");
+//			sb.append("\n\t\t\t");
+//			sb.append("e.printStackTrace();");
+//			sb.append("\n\t\t}");
 			sb.append("\n\t\t");
 			sb.append("return ");
 			sb.append(varName).append("s;");
@@ -429,41 +463,23 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/queryListCount\",produces=\"text/html;charset=UTF-8\")");
+			//sb.append("@RequestMapping(value=\"/queryListCount\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/queryListCount\")");
+			sb.append("\n\t");
+			sb.append("@ResponseBody");
 		}
 		sb.append("\n\t");
-		sb.append("public int queryListCount(HttpServletRequest request, HttpServletResponse response, ");
-		sb.append(voName);
-		sb.append(" ");
-		sb.append(varName);
-		sb.append(")");
+		//sb.append("public int queryListCount(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("public int queryListCount(@RequestBody Map<String, Object> params");
+		sb.append(") throws Exception");
 		if(isImpl) {
 			sb.append("{");
-			
 			sb.append("\n\t\t");
-			sb.append("Map<String, Object> parameterObject = new HashMap<String, Object>();");
-			sb.append("\n\t\t");
-			sb.append("setParameterMap(parameterObject, ");
-			sb.append(varName);
-			sb.append(");");
-			
-			sb.append("\n\t\t");
-			sb.append("int count = 0;");
-			
-			sb.append("\n\t\t");
-			sb.append("try {");
-			sb.append("\n\t\t\t");
-			sb.append("count = ");
+			sb.append("int count = ");
 			sb.append(varServiceName);
 			sb.append(".queryListCount(");
-//			sb.append(varName);
-			sb.append("parameterObject");
+			sb.append("params");
 			sb.append(");");
-			sb.append("\n\t\t");
-			sb.append("} catch (Exception e) {");
-			sb.append("\n\t\t\t");
-			sb.append("e.printStackTrace();");
-			sb.append("\n\t\t}");
 			sb.append("\n\t\t");
 			sb.append("return count;");
 			sb.append("\n\t}");

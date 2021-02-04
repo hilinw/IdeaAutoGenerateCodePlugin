@@ -55,15 +55,13 @@ public class JavaDaoGenerator extends JavaFileGenerator {
 		sb.append("import java.util.Map;\n");
 		sb.append("\n");
 		//sb.append(this.generateImports());
-		
-		sb.append("import ");
-		sb.append(packageName);
-		if(isSameDir()) {
-			sb.append(".");
-		}else {
+
+		if(!isSameDir()) {
+			sb.append("import ");
+			sb.append(packageName);
 			sb.append(".vo.");
+			sb.append(voName).append(";\n");
 		}
-		sb.append(voName).append(";\n");
 
 //		Comment comment = javaClass.getAnnotation(Comment.class);
 //		sb.append(getCommentContent(comment, "", "Dao of "));
@@ -168,7 +166,7 @@ public class JavaDaoGenerator extends JavaFileGenerator {
 //		sb.append(voName);
 //		sb.append(" ");
 //		sb.append(varName);
-		sb.append("String id");
+		sb.append("long id");
 		sb.append(")");
 		if(isImpl) {
 			sb.append("{");
@@ -199,7 +197,7 @@ public class JavaDaoGenerator extends JavaFileGenerator {
 		sb.append("\n\t");
 		sb.append("public ").append(voName);
 		sb.append(" queryById(");
-		sb.append("String id");
+		sb.append("long id");
 		sb.append(")");
 		if(isImpl) {
 			sb.append("{");
