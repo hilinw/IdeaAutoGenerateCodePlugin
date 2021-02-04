@@ -96,7 +96,7 @@ public class SqlMappingGenerator {
 		sb.append("\n\n");
 		sb.append(getQueryById(tableName, voName, daoName));
 		sb.append("\n\n");
-		sb.append(getQueryListById(tableName, voName, daoName));
+		sb.append(getQueryListByIds(tableName, voName, daoName));
 		sb.append("\n\n");
 		sb.append(getQueryListMethod(tableName, voName, daoName));
 		sb.append("\n\n");
@@ -284,7 +284,7 @@ public class SqlMappingGenerator {
 	
 	
 	/**
-	 * <select id="queryListById" parameterType="java.lang.String"
+	 * <select id="queryListByIds" parameterType="java.lang.String"
 	 * resultType="xxx.vo.XxxxxVo" SELECT column1,column2.... 
 	 * FROM tableName LIMIT
 	 * Where Fid = #{id}
@@ -331,7 +331,7 @@ public class SqlMappingGenerator {
 		
 	
 	/**
-	 * <select id="queryListById" parameterType="java.util.List"
+	 * <select id="queryListByIds" parameterType="java.util.List"
 	 * resultType="xxx.vo.XxxxxVo" SELECT column1,column2.... 
 	 * FROM tableName LIMIT
 	 * Where id in idSet
@@ -341,10 +341,10 @@ public class SqlMappingGenerator {
 	 * @param daoName
 	 * @return
 	 */
-	private String getQueryListById(String tableName, String voName, String daoName) {
+	private String getQueryListByIds(String tableName, String voName, String daoName) {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append("\t<select id=\"queryListById\" ");
+		sb.append("\t<select id=\"queryListByIds\" ");
 		sb.append("parameterType=\"java.util.List\" ");
 		// sb.append(voName);
 		// sp.append("\" ");

@@ -126,7 +126,7 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		sb.append("\n");
 		sb.append(getQueryById(voName, varVoName,varServiceName, true));
 		sb.append("\n");
-		sb.append(getQueryListById(voName, varVoName,varServiceName, true));
+		sb.append(getQueryListByIds(voName, varVoName,varServiceName, true));
 		sb.append("\n");
 		sb.append(getQueryListMethod(voName, varVoName,varServiceName, true));
 		sb.append("\n");
@@ -315,17 +315,17 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		return sb.toString();
 	}	
 	
-	private String getQueryListById(String voName,String varName,String varServiceName,boolean isImpl) {
+	private String getQueryListByIds(String voName,String varName,String varServiceName,boolean isImpl) {
 
 		StringBuilder sb = new StringBuilder();
 		if(isImpl) {
 			sb.append("\n\t");
-			sb.append("@RequestMapping(value=\"/queryListById\",produces=\"text/html;charset=UTF-8\")");
+			sb.append("@RequestMapping(value=\"/queryListByIdss\",produces=\"text/html;charset=UTF-8\")");
 		}
 		sb.append("\n\t");
 		sb.append("public List<").append(voName);
 		sb.append("> ");
-		sb.append("queryListById(HttpServletRequest request, HttpServletResponse response, ");
+		sb.append("queryListByIds(HttpServletRequest request, HttpServletResponse response, ");
 		sb.append("List<String> idSet");
 		sb.append(")");
 		
@@ -347,7 +347,7 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 			sb.append(varName).append("s = ");
 			sb.append(varServiceName);
 			
-			sb.append(".queryListById(");
+			sb.append(".queryListByIds(");
 			sb.append("idSet");
 			sb.append(");");
 			

@@ -96,7 +96,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append("\n");
 		sb.append(getQueryById(voName, varVoName, varDaoName, false));
 		sb.append("\n");
-		sb.append(getQueryListById(voName, varVoName, varDaoName, false));
+		sb.append(getQueryListByIds(voName, varVoName, varDaoName, false));
 		sb.append("\n");
 		sb.append(getQueryListMethod(voName, varVoName, varDaoName, false));
 		sb.append("\n");
@@ -208,7 +208,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append("\n");
 		sb.append(getQueryById(voName, varVoName, varDaoName, true));
 		sb.append("\n");
-		sb.append(getQueryListById(voName, varVoName, varDaoName, true));
+		sb.append(getQueryListByIds(voName, varVoName, varDaoName, true));
 		sb.append("\n");
 		sb.append(getQueryListMethod(voName, varVoName, varDaoName, true));
 		sb.append("\n");
@@ -408,7 +408,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		return sb.toString();
 	}
 
-	private String getQueryListById(String voName, String varName, String varDaoName, boolean isImpl) {
+	private String getQueryListByIds(String voName, String varName, String varDaoName, boolean isImpl) {
 		StringBuilder sb = new StringBuilder();
 		if (isImpl) {
 			sb.append("\n\t");
@@ -416,7 +416,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		}
 		sb.append("\n\t");
 		sb.append("public List<").append(voName);
-		sb.append("> queryListById(");
+		sb.append("> queryListByIds(");
 		sb.append("List<String> idSet");
 		sb.append(") throws Exception");
 		if (isImpl) {
@@ -424,7 +424,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 			sb.append("\n\t\t");
 			sb.append("return ");
 			sb.append(varDaoName);
-			sb.append(".queryListById(");
+			sb.append(".queryListByIds(");
 			sb.append("idSet");
 			sb.append(");");
 			sb.append("\n\t}");
