@@ -268,8 +268,8 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 			sb.append("@RequestMapping(value=\"/queryById\",produces=\"text/html;charset=UTF-8\")");
 		}
 		sb.append("\n\t");
-		sb.append("public List<").append(voName);
-		sb.append("> ");
+		sb.append("public ").append(voName);
+		sb.append(" ");
 		sb.append("queryById(HttpServletRequest request, HttpServletResponse response, ");
 		sb.append("String id");
 		sb.append(")");
@@ -277,8 +277,8 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 		if(isImpl) {
 			sb.append("{");
 			sb.append("\n\t\t");
-			sb.append("List<").append(voName).append("> ");
-			sb.append(varName).append("s = null;");
+			sb.append("").append(voName).append("> ");
+			sb.append(varName).append(" = null;");
 //			sb.append("\n\t\t");
 //			sb.append("Map<String, Object> parameterObject = new HashMap<String, Object>();");
 //			sb.append("\n\t\t");
@@ -289,7 +289,7 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 			sb.append("\n\t\t");
 			sb.append("try {");
 			sb.append("\n\t\t\t");
-			sb.append(varName).append("s = ");
+			sb.append(varName).append(" = ");
 			sb.append(varServiceName);
 			
 			sb.append(".queryById(");
@@ -304,7 +304,7 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 			sb.append("\n\t\t}");
 			sb.append("\n\t\t");
 			sb.append("return ");
-			sb.append(varName).append("s;");
+			sb.append(varName).append(";");
 			sb.append("\n\t}");
 		}else {
 			

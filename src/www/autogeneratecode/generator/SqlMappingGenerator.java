@@ -301,9 +301,11 @@ public class SqlMappingGenerator {
 		sb.append("parameterType=\"java.lang.String\" ");
 		// sb.append(voName);
 		// sp.append("\" ");
-		sb.append("resultType=\"");
-		sb.append(voName);
-		sb.append("\">");
+//		sb.append("resultType=\"");
+//		sb.append(voName);
+//		sb.append("\">");
+		sb.append("resultMap=\"resultMap\">");
+
 		sb.append("\n\t\t");
 		sb.append("SELECT ");
 		sb.append(getAddFields());
@@ -348,9 +350,10 @@ public class SqlMappingGenerator {
 		sb.append("parameterType=\"java.util.List\" ");
 		// sb.append(voName);
 		// sp.append("\" ");
-		sb.append("resultType=\"");
-		sb.append(voName);
-		sb.append("\">");
+//		sb.append("resultType=\"");
+//		sb.append(voName);
+//		sb.append("\">");
+		sb.append("resultMap=\"resultMap\">");
 		sb.append("\n\t\t");
 		sb.append("SELECT ");
 		sb.append(getAddFields());
@@ -401,9 +404,11 @@ public class SqlMappingGenerator {
 		sb.append("parameterType=\"java.util.Map\" ");
 		// sb.append(voName);
 		// sp.append("\" ");
-		sb.append("resultType=\"");
-		sb.append(voName);
-		sb.append("\">");
+//		sb.append("resultType=\"");
+//		sb.append(voName);
+//		sb.append("\">");
+		sb.append("resultMap=\"resultMap\">");
+
 		sb.append("\n\t\t");
 		sb.append("SELECT ");
 		sb.append(getAddFields());

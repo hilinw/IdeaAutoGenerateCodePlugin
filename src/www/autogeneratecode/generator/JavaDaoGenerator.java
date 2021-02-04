@@ -197,8 +197,8 @@ public class JavaDaoGenerator extends JavaFileGenerator {
 			sb.append("@Override");
 		}
 		sb.append("\n\t");
-		sb.append("public List<").append(voName);
-		sb.append("> queryById(");
+		sb.append("public ").append(voName);
+		sb.append(" queryById(");
 		sb.append("String id");
 		sb.append(")");
 		if(isImpl) {
