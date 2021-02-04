@@ -297,7 +297,7 @@ public class SqlMappingGenerator {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("\t<select id=\"queryById\" ");
-		sb.append("parameterType=\"java.lang.String\" ");
+//		sb.append("parameterType=\"java.lang.String\" ");
 		// sb.append(voName);
 		// sp.append("\" ");
 //		sb.append("resultType=\"");
