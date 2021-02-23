@@ -506,6 +506,12 @@ public class SqlMappingGenerator {
 			sb.append("\n\t\t\t");			
 			sb.append("</if>");
 			
+			//使用范围查询的字段 字段后面增加 "From"和"To"
+			if(isFromToField(field.getName()) ) {
+				sb.append(getTestFromToFields(field.getName()+"From",column.name(),true));
+				sb.append(getTestFromToFields(field.getName()+"To",column.name(),false));
+			}
+			
 		}
 		return sb.toString();
 
@@ -519,6 +525,40 @@ public class SqlMappingGenerator {
 			return true;
 		}
 		return false;
+	}
+	/**
+	 * 使用范围查询的字段
+	 * 如日期，时间字段
+	 */
+	private boolean isFromToField(String fileName) {
+		if("createTime".equalsIgnoreCase(fileName) || "modifyTime".equalsIgnoreCase(fileName)
+				|| "billDate".equalsIgnoreCase(fileName)) {
+			return true;
+		}
+		return false;
+	}
+	private String getTestFromToFields(String fieldName, String columnName, boolean isFrom) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n\t\t\t");
+		sb.append("<if test=\"");
+		sb.append(fieldName);
+		sb.append(" != null and ");
+		sb.append(fieldName);
+		sb.append(" != '' \">");
+		sb.append("\n\t\t\t\t");			
+		sb.append("and ");
+		sb.append(columnName);
+		if(isFrom) {
+			sb.append(" &gt;= #{");
+		}else {
+			sb.append(" &lt;= #{");
+		}
+		sb.append(fieldName);
+		sb.append("}");
+
+		sb.append("\n\t\t\t");			
+		sb.append("</if>");		
+		return sb.toString();
 	}
 	
 	private String getAddFields() {
