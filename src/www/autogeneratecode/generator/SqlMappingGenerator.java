@@ -493,9 +493,15 @@ public class SqlMappingGenerator {
 //			sb.append(column.name());
 			sb.append(columnName);
 
-			sb.append(" = #{");
-			sb.append(field.getName());
-			sb.append("}");
+			if(isLikeField(field.getName()) ) {
+				sb.append(" like '%${");
+				sb.append(field.getName());
+				sb.append("}%");
+			}else {
+				sb.append(" = #{");
+				sb.append(field.getName());
+				sb.append("}");
+			}
 			
 			sb.append("\n\t\t\t");			
 			sb.append("</if>");
@@ -504,7 +510,17 @@ public class SqlMappingGenerator {
 		return sb.toString();
 
 	}
-
+	/**
+	 * 使用like查询的字段
+	 */
+	private boolean isLikeField(String fileName) {
+		if("name".equalsIgnoreCase(fileName) || "number".equalsIgnoreCase(fileName)
+				|| "remark".equalsIgnoreCase(fileName)) {
+			return true;
+		}
+		return false;
+	}
+	
 	private String getAddFields() {
 
 //		Field[] fields = javaClass.getFields();
