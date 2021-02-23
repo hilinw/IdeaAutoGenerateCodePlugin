@@ -427,17 +427,22 @@ public class JavaControllerGenerator extends JavaFileGenerator {
 			sb.append("\n\t\t");
 			sb.append("Object slimit = params.get(\"limit\");");
 			sb.append("\n\n\t\t");
-			sb.append("if(soffset == null || soffset.toString().length() ==0 ) {");
+			sb.append("if (soffset != null && soffset.toString().length() > 0) {");
 			sb.append("\n\t\t\t");
+			sb.append("offset = Integer.parseInt(soffset.toString());");
+			sb.append("\n\t\t");
+			sb.append("}");
+			sb.append("\n\t\t");
+			sb.append("if (slimit != null && slimit.toString().length() > 0) {");
+			sb.append("\n\t\t\t");
+			sb.append("limit = Integer.parseInt(slimit.toString());");
+			sb.append("\n\t\t");
+			sb.append("}");
+			sb.append("\n\t\t");
 			sb.append("params.put(\"offset\", offset);");
 			sb.append("\n\t\t");
-			sb.append("}");
-			sb.append("\n\t\t");
-			sb.append("if(slimit == null || slimit.toString().length() ==0 ) {");
-			sb.append("\n\t\t\t");
 			sb.append("params.put(\"limit\", limit);");
-			sb.append("\n\t\t");
-			sb.append("}");
+
 
 			
 			sb.append("\n\n\t\t");
