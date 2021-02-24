@@ -203,7 +203,7 @@ public class SqlMappingGenerator {
 		sb.append("INSERT INTO ");
 		sb.append(tableName);
 		sb.append(" (");
-		sb.append(getAddFields());
+		sb.append(getAddFields(false));
 		sb.append(")");
 		sb.append("\n\t\t");
 		sb.append("VALUES (");
@@ -354,24 +354,22 @@ public class SqlMappingGenerator {
 
 		sb.append("\n\t\t");
 		sb.append("SELECT ");
-		sb.append(getAddFields());
+		sb.append(getAddFields(true));
 
 		sb.append("\n\t\t");
 		sb.append("FROM ");
 		sb.append(tableName);
+		sb.append(" A ");
 		sb.append("\n\t\t");
 //		sb.append("WHERE Fid = #{id}");
 		if(hasPk) {
 			//主键名称不一定是fid
-			sb.append("WHERE ").append(this.pkColName).append(" = #{id} ");
+			sb.append("WHERE A.").append(this.pkColName).append(" = #{id} ");
 		}else {
-			sb.append("WHERE Fid = #{id}");
+			sb.append("WHERE A.Fid = #{id}");
 		}
 
-		//sb.append(getTestFields());
-
 		sb.append("\n\t\t");
-		//sb.append("LIMIT #{offset}, #{limit}");
 
 		sb.append("\n\t</select>");
 		return sb.toString();
@@ -396,17 +394,18 @@ public class SqlMappingGenerator {
 		sb.append("<select id=\"queryListByIds\" parameterType=\"java.util.List\" resultMap=\"resultMap\">");	
 		sb.append("\n\t\t");
 		sb.append("SELECT ");
-		sb.append(getAddFields());
+		sb.append(getAddFields(true));
 
 		sb.append("\n\t\t");
 		sb.append("FROM ");
 		sb.append(tableName);
+		sb.append(" A ");
 		sb.append("\n\t\t");
 		if(hasPk) {
 			//主键名称不一定是fid
-			sb.append("WHERE ").append(this.pkColName).append(" in");
+			sb.append("WHERE A.").append(this.pkColName).append(" in");
 		}else {
-			sb.append("WHERE Fid in");
+			sb.append("WHERE A.Fid in");
 		}
 		
 		sb.append("\n\t\t\t");
@@ -449,11 +448,12 @@ public class SqlMappingGenerator {
 
 		sb.append("\n\t\t");
 		sb.append("SELECT ");
-		sb.append(getAddFields());
+		sb.append(getAddFields(true));
 
 		sb.append("\n\t\t");
 		sb.append("FROM ");
 		sb.append(tableName);
+		sb.append(" A ");
 		sb.append("\n\t\t");
 		sb.append("WHERE 1 = 1");
 
@@ -493,6 +493,7 @@ public class SqlMappingGenerator {
 		sb.append("\n\t\t");
 		sb.append("FROM ");
 		sb.append(tableName);
+		sb.append(" A ");
 		sb.append("\n\t\t");
 		sb.append("WHERE 1 = 1");
 
@@ -530,7 +531,7 @@ public class SqlMappingGenerator {
 			sb.append(field.getName());
 			sb.append(" != '' \">");
 			sb.append("\n\t\t\t\t");			
-			sb.append("and ");
+			sb.append("and A.");
 //			sb.append(column.name());
 			sb.append(columnName);
 
@@ -634,7 +635,7 @@ public class SqlMappingGenerator {
 		sb.append(fieldName);
 		sb.append(" != '' \">");
 		sb.append("\n\t\t\t\t");			
-		sb.append("and ");
+		sb.append("and A.");
 		sb.append(columnName);
 		if(isFrom) {
 			sb.append(" &gt;= #{");
@@ -649,7 +650,7 @@ public class SqlMappingGenerator {
 		return sb.toString();
 	}
 	
-	private String getAddFields() {
+	private String getAddFields(boolean isQuery) {
 
 //		Field[] fields = javaClass.getFields();
 		PsiField[] fields = psiClass.getAllFields();
@@ -676,7 +677,9 @@ public class SqlMappingGenerator {
 			if (sb.length() > 0) {
 				sb.append(", ");
 			}
-//			sb.append(column.name());
+			if(isQuery) {
+				sb.append("A.");
+			}
 			sb.append(columnName);
 
 		}
