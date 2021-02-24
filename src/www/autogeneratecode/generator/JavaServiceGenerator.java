@@ -71,7 +71,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append("\n\n");
 
 		// 导入import
-//		sb.append("import java.util.HashMap;\n");
+		//sb.append("import java.util.HashMap;\n");
 		sb.append("import java.util.List;\n");
 		sb.append("import java.util.Map;\n");
 		sb.append("\n");
@@ -97,6 +97,8 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append(getUpdateMethod(voName, varVoName, varDaoName, false));
 		sb.append("\n");
 		sb.append(getDeleteById(voName, varVoName, varDaoName, false));
+		sb.append("\n");
+		sb.append(getDeleteByIds(voName, varVoName, varDaoName, false));
 		sb.append("\n");
 		sb.append(getQueryById(voName, varVoName, varDaoName, false));
 		sb.append("\n");
@@ -141,7 +143,7 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 
 		// 导入import
 
-//		sb.append("import java.util.HashMap;\n");
+		sb.append("import java.util.HashMap;\n");
 		sb.append("import java.util.List;\n");
 		sb.append("import java.util.Map;\n");
 
@@ -207,6 +209,8 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 		sb.append(getUpdateMethod(voName, varVoName, varDaoName, true));
 		sb.append("\n");
 		sb.append(getDeleteById(voName, varVoName, varDaoName, true));
+		sb.append("\n");
+		sb.append(getDeleteByIds(voName, varVoName, varDaoName, true));
 		sb.append("\n");
 		sb.append(getQueryById(voName, varVoName, varDaoName, true));
 		sb.append("\n");
@@ -382,6 +386,50 @@ public class JavaServiceGenerator extends JavaFileGenerator {
 
 	}
 
+	/**
+	 * 
+	 * @param voName
+	 * @param varName
+	 * @param varDaoName
+	 * @param isImpl
+	 * @return
+	 * 
+	 * 	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+		public void deleteByIds(List<String> idSet) throws Exception {
+			Map<String, Object> parameterObject = new HashMap<String, Object>();
+			parameterObject.put("idSet", idSet);
+			XxxDao.deleteByIds(parameterObject);
+		}	
+	 */
+	private String getDeleteByIds(String voName, String varName, String varDaoName, boolean isImpl) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append("\n\t");
+		if (isImpl && isAddTransactional()) {
+			sb.append("@Transactional(readOnly = false, propagation = Propagation.REQUIRED)");
+			sb.append("\n\t");
+		}
+		sb.append("public void deleteByIds(List<String> idSet) throws Exception");
+		if (isImpl) {
+			sb.append("{");
+			sb.append("\n\t\t");
+			sb.append("Map<String, Object> parameterObject = new HashMap<String, Object>();");
+			sb.append("\n\t\t");
+			sb.append("parameterObject.put(\"idSet\", idSet);");
+			sb.append("\n\t\t");
+			sb.append(varDaoName);
+			sb.append(".deleteByIds(parameterObject);");
+			sb.append("\n\t}");
+		} else {
+
+			sb.append(";");
+			return sb.toString();
+		}
+
+		return sb.toString();
+
+	}
+	
 	private String getQueryById(String voName, String varName, String varDaoName, boolean isImpl) {
 		StringBuilder sb = new StringBuilder();
 //		if (isImpl) {
