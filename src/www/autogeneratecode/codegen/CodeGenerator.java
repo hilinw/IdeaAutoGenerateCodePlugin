@@ -63,6 +63,7 @@ public class CodeGenerator {
                     if (psiClass1[0].getAnnotation("www.autogeneratecode.model.Entity") != null) {
                         if (this.config.isGenerateEntity()) {
                             this.generateEntityFile(psiJavaFileImpl);
+                            this.generatePropertiesFile(psiJavaFileImpl);
                         }
                         if (this.config.isGenerateController()) {
                             this.generateControllerFile(psiJavaFileImpl);
@@ -134,6 +135,60 @@ public class CodeGenerator {
 
     }
 
+	/**
+	 * 生成多语言文件
+	 * @param javaClass
+	 * @return
+	 * @throws IOException
+	 */
+	private File generatePropertiesFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
+
+		if (this.getProjectDir() == null) {
+			LOG.error("generatePropertiesFile error: ProjectDir is null!");
+			System.out.println("generatePropertiesFile error: ProjectDir is null!");			
+			return null;
+		}
+		
+        PsiClass[] classes = psiJavaFileImpl.getClasses();
+        File[] files = new File[classes.length];
+        int i = 0;
+        String packageName = psiJavaFileImpl.getPackageName();
+        
+
+		PropertiesGenerator generator = new PropertiesGenerator(psiJavaFileImpl, packageName);
+		generator.setExtClass(config.getExtClass());
+		generator.setSameDir(config.isSameDir());
+		generator.generate();
+		
+		System.out.println("packageName: '" + packageName );
+		String filedir = "";
+		if(packageName.startsWith("metadata.")) {
+			String packagepath = packageName.substring(9);
+			filedir = packagepath.replace(",", File.pathSeparator);
+		}
+		File file = null;
+		{
+			file = generator.write(this.config.getWorkSpace());
+			this.fileTasks.add(new CopyTask(file, this.getPropertiesFileDir(psiJavaFileImpl,filedir)));
+			LOG.info("generatePropertiesFile: '" + file.getName() + "'  ok.");
+			System.out.println("generatePropertiesFile: '" + file.getName() + "'  ok.");
+		}
+		{
+			file = generator.write_en(this.config.getWorkSpace());
+			this.fileTasks.add(new CopyTask(file, this.getPropertiesFileDir(psiJavaFileImpl,filedir)));
+			LOG.info("generatePropertiesFile: '" + file.getName() + "'  ok.");
+			System.out.println("generatePropertiesFile: '" + file.getName() + "'  ok.");
+		}
+		{
+			file = generator.write_zh_cn(this.config.getWorkSpace());
+			this.fileTasks.add(new CopyTask(file, this.getPropertiesFileDir(psiJavaFileImpl,filedir)));
+			LOG.info("generatePropertiesFile: '" + file.getName() + "'  ok.");
+			System.out.println("generatePropertiesFile: '" + file.getName() + "'  ok.");
+		}
+		return file;
+
+	}
+    
     private File generateControllerFile(PsiJavaFileImpl psiJavaFileImpl) throws IOException {
 
         PsiClass[] classes = psiJavaFileImpl.getClasses();
@@ -330,10 +385,22 @@ public class CodeGenerator {
         }
 
         File file = new File(newPath);
-        System.out.println("newJavaFilePath:" + file.getPath());
+        System.out.println("newFilePath:" + file.getPath());
         return file;
 
     }
+    
+
+	/**
+	 * 生成Properties文件的路径。 
+	 * 如果是maven结构，生成在 src/main/resources目录下+vo包路径
+	 */
+	private File getPropertiesFileDir(PsiJavaFileImpl psiJavaFileImpl,String childDir) {
+
+		return getSqlFileDir(psiJavaFileImpl,childDir);
+
+	}
+
 
     public void copyFile(){
         try {

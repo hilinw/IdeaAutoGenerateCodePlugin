@@ -1,0 +1,20 @@
+Idea 2019.1前的版本没有问题。
+
+用 Idea 2020.1版本 打开后报 class not find :
+com.intellij.psi.PsiClass;
+com.intellij.psi.impl.source.PsiJavaFileImpl;
+
+https://blog.csdn.net/linysuccess/article/details/107417874
+
+IDEA 2020启动插件的时候，默认不再包含Java language PSI Model模块。
+
+详见官网说明：https://jetbrains.org/intellij/sdk…
+
+因此需要将模块依赖添加到插件的配置文件plugin.xml中，添加进去之后是这样的：
+
+<depends>com.intellij.modules.platform</depends>
+<depends>com.intellij.modules.lang</depends>
+<depends>com.intellij.modules.java</depends>
+
+问题是最后一项增加后报错：
+<depends>com.intellij.modules.java</depends>
