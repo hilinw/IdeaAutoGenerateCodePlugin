@@ -550,8 +550,8 @@ public class SqlMappingGenerator {
 			
 			//使用范围查询的字段 字段后面增加 "From"和"To"
 			if(isFromToField(field.getName()) ) {
-				sb.append(getTestFromToFields(field.getName()+"From",column.name(),true));
-				sb.append(getTestFromToFields(field.getName()+"To",column.name(),false));
+				sb.append(getTestFromToFields(field.getName()+"From",columnName,true));
+				sb.append(getTestFromToFields(field.getName()+"To",columnName,false));
 			}
 			
 		}

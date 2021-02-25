@@ -2,14 +2,13 @@ package www.autogeneratecode.generator;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import www.autogeneratecode.utils.IOUtils;
-import www.autogeneratecode.model.Comment;
 
 import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiField;
 
 public class PropertiesGenerator extends JavaFileGenerator {

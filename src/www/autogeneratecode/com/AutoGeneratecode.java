@@ -12,6 +12,7 @@ import com.intellij.psi.util.PsiUtilBase;
 import org.jetbrains.annotations.NotNull;
 import www.autogeneratecode.codegen.ProjectConfig;
 import www.autogeneratecode.model.Entity;
+import com.intellij.openapi.actionSystem.DataContext;
 
 import javax.swing.*;
 import java.awt.*;

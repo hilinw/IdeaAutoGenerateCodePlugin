@@ -1,6 +1,7 @@
+Idea 2019.1前的版本没有问题。之后的版本报错，目前未解决，请使用Idea 2019.1前的版本
+
 
 https://www.jianshu.com/p/2427e4cfd3e9
-
 
 IntelliJ IDEA插件开发指南(一)
 https://blog.csdn.net/ExcellentYuXiao/article/details/80273109

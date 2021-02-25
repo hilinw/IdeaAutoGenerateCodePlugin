@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="auto_generate_code_mode">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/auto_generate_code_mode.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-impl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/platform-api.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/platform-impl.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
