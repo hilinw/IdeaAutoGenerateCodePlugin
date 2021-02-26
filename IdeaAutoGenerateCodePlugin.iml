@@ -7,7 +7,21 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/resources" type="java-resource" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA IU-191.6707.61" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="file://D:/Java/jdk1.8.0_152_64/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://D:/Java/jdk1.8.0_152_64/lib" />
+        </SOURCES>
+        <jarDirectory url="file://D:/Java/jdk1.8.0_152_64/lib" recursive="false" />
+        <jarDirectory url="file://D:/Java/jdk1.8.0_152_64/lib" recursive="false" type="SOURCES" />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="auto_generate_code_mode" level="project" />
   </component>
 </module>

@@ -206,15 +206,15 @@ public abstract class JavaFileGenerator {
 
     protected String getPsiFieldTypeName(PsiField psiField) {
         String s = psiField.getType().getCanonicalText();
-        if ("java.lang.String".equals(s)) {
-            s = "String";
-        }
-        if (imports.contains(s)) {
+//        if ("java.lang.String".equals(s)) {
+//            s = "String";
+//        }
+//        if (imports.contains(s)) {
             int p = s.lastIndexOf(".");
             if (p > 0) {
                 s = s.substring(p + 1);
             }
-        }
+//        }
 
         return s;
     }

@@ -512,6 +512,9 @@ public class SqlMappingGenerator {
 		PsiAnnotation psiAnnotation = null;
 		StringBuilder sb = new StringBuilder();
 		//Column column = null;
+		String fieldType = "";
+		boolean isDateField = false;
+		String fileName = "";
 		for (PsiField field : fields) {
 			psiAnnotation = field.getAnnotation("www.autogeneratecode.model.Column");
 			if(psiAnnotation == null) {
@@ -522,26 +525,33 @@ public class SqlMappingGenerator {
 //				continue;
 //			}
 			String columnName = getAnnotateText(psiAnnotation, "name", "");
+			fileName = field.getName();
+			fieldType = getPsiFieldTypeName(field);
 
 			sb.append("\n\t\t\t");
 			
 			sb.append("<if test=\"");
-			sb.append(field.getName());
-			sb.append(" != null and ");
-			sb.append(field.getName());
-			sb.append(" != '' \">");
+			sb.append(fileName);
+			isDateField = isDateField(fieldType);
+			if(isDateField) {
+				sb.append(" != null\">");
+			}else {
+				sb.append(" != null and ");
+				sb.append(fileName);
+				sb.append(" != '' \">");
+			}
 			sb.append("\n\t\t\t\t");			
 			sb.append("and A.");
 //			sb.append(column.name());
 			sb.append(columnName);
 
-			if(isLikeField(field.getName()) ) {
+			if(isLikeField(fileName) ) {
 				sb.append(" like '%${");
-				sb.append(field.getName());
+				sb.append(fileName);
 				sb.append("}%'");
 			}else {
 				sb.append(" = #{");
-				sb.append(field.getName());
+				sb.append(fileName);
 				sb.append("}");
 			}
 			
@@ -549,9 +559,9 @@ public class SqlMappingGenerator {
 			sb.append("</if>");
 			
 			//使用范围查询的字段 字段后面增加 "From"和"To"
-			if(isFromToField(field.getName()) ) {
-				sb.append(getTestFromToFields(field.getName()+"From",columnName,true));
-				sb.append(getTestFromToFields(field.getName()+"To",columnName,false));
+			if(isFromToField(fileName) ) {
+				sb.append(getTestFromToFields(fileName+"From",columnName,true));
+				sb.append(getTestFromToFields(fileName+"To",columnName,false));
 			}
 			
 		}
@@ -626,14 +636,41 @@ public class SqlMappingGenerator {
 		}
 		return false;
 	}
+
+	/**
+	 *
+	 * 是否是日期，时间字段
+	 */
+	private boolean isDateField(String fieldType) {
+		if("Date".equalsIgnoreCase(fieldType) || "Timestamp".equalsIgnoreCase(fieldType)) {
+			return true;
+		}
+		return false;
+	}
+	/**
+	 * 获取字段类型
+	 * @param psiField
+	 * @return
+	 */
+	protected String getPsiFieldTypeName(PsiField psiField) {
+		String s = psiField.getType().getCanonicalText();
+		int p = s.lastIndexOf(".");
+		if (p > 0) {
+			s = s.substring(p + 1);
+		}
+		return s;
+	}
+
 	private String getTestFromToFields(String fieldName, String columnName, boolean isFrom) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n\t\t\t");
 		sb.append("<if test=\"");
 		sb.append(fieldName);
-		sb.append(" != null and ");
-		sb.append(fieldName);
-		sb.append(" != '' \">");
+		sb.append(" != null\">");
+		//时间字段不需要 !=""判断
+//		sb.append(" and ");
+//		sb.append(fieldName);
+//		sb.append(" != '' \">");
 		sb.append("\n\t\t\t\t");			
 		sb.append("and A.");
 		sb.append(columnName);
