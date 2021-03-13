@@ -28,7 +28,7 @@ public class PropertiesGenerator extends JavaFileGenerator {
 	public File write(File dir) throws IOException {
 		dir.mkdirs();
 
-		File file = new File(dir, psiClass.getName() + ".properties");
+		File file = new File(dir, psiClass.getName() + "VO.properties");
 		file = IOUtils.write(file, getSource_zh_cn());
 		System.out.println("Generate JavaFile source path:" + file.getPath());
 		return file;
@@ -39,7 +39,7 @@ public class PropertiesGenerator extends JavaFileGenerator {
 
 		dir.mkdirs();
 
-		File file = new File(dir, psiClass.getName() + "_en.properties");
+		File file = new File(dir, psiClass.getName() + "VO_en.properties");
 		file = IOUtils.write(file, getSource_en());
 		System.out.println("Generate JavaFile source path:" + file.getPath());
 		return file;
@@ -49,7 +49,7 @@ public class PropertiesGenerator extends JavaFileGenerator {
 
 		dir.mkdirs();
 
-		File file = new File(dir, psiClass.getName() + "_zh_CN.properties");
+		File file = new File(dir, psiClass.getName() + "VO_zh_CN.properties");
 		file = IOUtils.write(file, getSource_zh_cn());
 		System.out.println("Generate JavaFile source path:" + file.getPath());
 		return file;
